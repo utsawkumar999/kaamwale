@@ -1,5 +1,13 @@
 # 🛠️ KaamWale.com (कामवाले.कॉम)
 
+[![Live Website](https://img.shields.io/badge/🌐%20Live%20Website-24%2F7%20Online-00c853?style=for-the-badge&logo=render)](https://kaamwale-4vg0.onrender.com)
+[![Status](https://img.shields.io/badge/Status-100%25%20Verified%20%26%20Active-blue?style=for-the-badge)](https://kaamwale-4vg0.onrender.com)
+
+---
+
+## 🌐 24×7 लाइव एक्सेस लिंक (Live Access Link):
+👉 **[https://kaamwale-4vg0.onrender.com](https://kaamwale-4vg0.onrender.com)**
+
 > **"आसानी से एक ही फ्रेम में सभी घरेलू एवं स्थानीय कारीगर सेवाएं। एक क्लिक में लाइव लोकेशन और डोरस्टेप वेरिफिकेशन। कोई छिपा हुआ चार्ज नहीं, 100% भरोसेमंद कारीगर।"**  
 > — **शिवम पंडित (संस्थापक व सुपर एडमिन)**
 
@@ -43,30 +51,10 @@
 
 ---
 
-## ⚙️ 24×7 मुफ़्त डिप्लॉयमेंट (Render.com Guide)
-
-1. **GitHub पर पुश करें**:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit of KaamWale.com platform"
-   git branch -M main
-   git remote add origin https://github.com/utsawkumar999/kaamwale.git
-   git push -u origin main
-   ```
-
-2. **Render.com पर कनेक्ट करें**:
-   * [Render.com](https://render.com) पर **New Web Service** चुनें।
-   * **Build Command**: `npm install`
-   * **Start Command**: `node server.js`
-   * **Environment Variables**: `BREVO_API_KEY` आदि सेट करें।
-
----
-
 ## 🔍 Google Search में लाने की विधि (SEO Indexing)
 
 1. [Google Search Console](https://search.google.com/search-console) खोलें।
-2. अपना लाइव डोमेन URL दर्ज करें (उदा. `https://kaamwale.onrender.com`)।
+2. अपना लाइव डोमेन URL दर्ज करें: **`https://kaamwale-4vg0.onrender.com`**
 3. **Sitemaps** सेक्शन में जाकर **`sitemap.xml`** सबमिट करें।
 4. **URL Inspection** में जाकर **Request Indexing** पर क्लिक करें। 24-48 घंटे में आपकी वेबसाइट गूगल सर्च में दिखने लगेगी।
 
@@ -76,3 +64,4 @@
 * **संस्थापक एवं स्वामी**: शिवम पंडित (Shivam Pandat)
 * **कॉल / व्हाट्सएप**: +91 9899862721
 * **ईमेल**: shivampandat819@gmail.com
+* **लाइव वेबसाइट**: [https://kaamwale-4vg0.onrender.com](https://kaamwale-4vg0.onrender.com)

@@ -1,5 +1,13 @@
 # 🛠️ KaamWale.com - On-Demand Local Services & Verified Worker Dispatch Platform
 
+[![Live Website](https://img.shields.io/badge/🌐%20Live%20Website-24%2F7%20Online-00c853?style=for-the-badge&logo=render)](https://kaamwale-4vg0.onrender.com)
+[![Status](https://img.shields.io/badge/Status-100%25%20Verified%20%26%20Active-blue?style=for-the-badge)](https://kaamwale-4vg0.onrender.com)
+
+---
+
+## 🌐 24×7 Live Access URL
+👉 **[https://kaamwale-4vg0.onrender.com](https://kaamwale-4vg0.onrender.com)**
+
 > **"In one frame to provide easily. One click and get location to provide these facilities. Easy registration, transparent pricing, verified partners, zero hidden charges."**  
 > — **Shivam Pandat (Founder & Platform Owner)**
 
@@ -16,7 +24,7 @@
 - **Google One-Tap / GIS Sign-In**: Direct OAuth identity verification.
 - **Brevo OTP Delivery**: 6-digit transaction PIN via transactional email and SMS API.
 
-### 2. 🛡️ 100% Police & Identity Verified Partners
+### 2. 🛡️ 100% Police & Identity Verified Partners (Zero Dummy Workers)
 - Strict onboarding criteria with zero dummy accounts.
 - Complete admin approval workflow with direct WhatsApp credential delivery.
 
@@ -36,12 +44,13 @@
   - **Account Number**: `2948684915` (IFSC: `KKBK0005304`)
 
 ### 6. 👑 Super Admin Dashboard
-- Live real-time dispatch dashboard for Shivam Pandat.
+- Live real-time dispatch dashboard for Shivam Pandat (+91 9899862721).
 - Instant approval, technician assignment, and payment reconciliation.
 
 ---
 
 ## 🛠️ Tech Stack
+- **Production Server**: Render.com (24×7 Cloud Hosting)
 - **Backend**: Node.js, Express HTTP server
 - **Frontend**: Vanilla JS (ES6+), HTML5, TailwindCSS, FontAwesome
 - **Maps**: Leaflet.js & OpenStreetMap
@@ -50,29 +59,9 @@
 
 ---
 
-## 🚀 24×7 Free Cloud Deployment (Render.com)
-
-1. **Push to GitHub**:
-   ```bash
-   git init
-   git add .
-   git commit -m "Production release of KaamWale.com"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/kaamwale.git
-   git push -u origin main
-   ```
-
-2. **Deploy on Render.com**:
-   - Create a free Web Service connected to your GitHub repo.
-   - **Build Command**: `npm install`
-   - **Start Command**: `node server.js`
-   - **Environment Variables**: Add your `BREVO_API_KEY` in Render dashboard.
-
----
-
 ## 🔍 Google Search Console & SEO
-- Contains pre-configured `robots.txt` and `sitemap.xml`.
-- Submit `sitemap.xml` in [Google Search Console](https://search.google.com/search-console) for indexing within 24-48 hours.
+- Pre-configured `robots.txt` and `sitemap.xml` pointing to `https://kaamwale-4vg0.onrender.com`.
+- Ready for Google Search Console indexing.
 
 ---
 
@@ -80,3 +69,4 @@
 - **Founder & Owner**: Shivam Pandat
 - **Mobile / WhatsApp**: +91 9899862721
 - **Email**: shivampandat819@gmail.com
+- **Live URL**: [https://kaamwale-4vg0.onrender.com](https://kaamwale-4vg0.onrender.com)
