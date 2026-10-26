@@ -1,0 +1,19 @@
+# Environment Variables (Keep API keys private)
+.env
+.env.local
+
+# Backups and Archives
+*.zip
+*.rar
+*.7z
+
+# Dependency & Temp Directories
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+.system_generated/
+scratch/
+
+# Operating System files
+Thumbs.db
+.DS_Store

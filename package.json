@@ -1,0 +1,25 @@
+{
+  "name": "kaamwale-com",
+  "version": "1.0.0",
+  "description": "KaamWale.com - Reliable Local Workers & Services Platform by Shivam Pandat",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "kaamwale",
+    "services",
+    "workers",
+    "electrician",
+    "plumber",
+    "carpenter",
+    "labour",
+    "india"
+  ],
+  "author": "Shivam Pandat (Founder)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
