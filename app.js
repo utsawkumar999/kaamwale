@@ -5880,3 +5880,61 @@ window.switchAppTab = switchAppTab;
 window.handleApkDownloadClick = handleApkDownloadClick;
 window.triggerPwaInstall = triggerPwaInstall;
 
+// ==========================================
+// MOBILE APP DOCK & LAYER-BY-LAYER SEARCH
+// ==========================================
+function initMobileAppMode() {
+  const isApk = navigator.userAgent.includes('KaamWaleApp');
+  const isPwa = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+  if (isApk || isPwa) {
+    document.body.classList.add('is-app-mode');
+  }
+}
+initMobileAppMode();
+
+function activateMobileDockTab(el) {
+  const btns = document.querySelectorAll('.mobile-dock-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+function handleMobileAppSearch(query) {
+  const q = (query || '').toLowerCase().trim();
+  if (!q) return;
+
+  const services = [
+    { name: 'Electrician', aliases: ['electrician', 'bijli', 'wire', 'fan', 'switch', 'inverter', 'light'] },
+    { name: 'Plumber', aliases: ['plumber', 'nal', 'tap', 'pipe', 'tank', 'leakage', 'motor'] },
+    { name: 'Carpenter', aliases: ['carpenter', 'badhai', 'wood', 'door', 'lock', 'table', 'furniture'] },
+    { name: 'Painter', aliases: ['painter', 'paint', 'wall', 'putty', 'color', 'rang'] },
+    { name: 'Cleaners', aliases: ['clean', 'cleaning', 'safai', 'deep clean', 'bathroom', 'kitchen', 'chimney', 'sofa'] },
+    { name: 'Mechanics', aliases: ['mechanic', 'ac', 'fridge', 'washing machine', 'appliance', 'car', 'bike'] },
+    { name: 'Welder', aliases: ['welder', 'welding', 'iron', 'gate', 'grill', 'loha'] },
+    { name: 'Labour', aliases: ['labour', 'majdoor', 'helper', 'shifting', 'construction'] }
+  ];
+
+  const matched = services.find(s => 
+    s.name.toLowerCase().includes(q) || s.aliases.some(a => a.includes(q))
+  );
+
+  if (matched && typeof handleBookServiceClick === 'function') {
+    // Optional smooth hint
+  }
+}
+
+// Sync mobile GPS header text whenever main location changes
+window.addEventListener('DOMContentLoaded', () => {
+  const mainLoc = document.getElementById('headerLocationText');
+  const mobLoc = document.getElementById('mobileAppHeaderLocText');
+  if (mainLoc && mobLoc) {
+    const syncText = () => { if (mainLoc.textContent) mobLoc.textContent = mainLoc.textContent; };
+    syncText();
+    const obs = new MutationObserver(syncText);
+    obs.observe(mainLoc, { childList: true, characterData: true, subtree: true });
+  }
+});
+
+window.activateMobileDockTab = activateMobileDockTab;
+window.handleMobileAppSearch = handleMobileAppSearch;
+
+

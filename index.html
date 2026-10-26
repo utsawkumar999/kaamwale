@@ -365,7 +365,10 @@
     <div class="absolute bottom-10 right-10 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[32rem] h-[32rem] bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="max-w-5xl mx-auto text-center relative z-10">
+    <!-- ==============================================
+         DESKTOP HERO VIEW (MD & LG SCREENS)
+    ============================================== -->
+    <div class="hidden md:block max-w-5xl mx-auto text-center relative z-10">
       
       <!-- Tricolor Pill Sub-tagline -->
       <div class="inline-flex items-center gap-2.5 tricolor-tag mb-6 shadow-lg">
@@ -491,6 +494,233 @@
           <p class="text-2xl font-black text-amber-300">₹0 Extra</p>
           <span class="text-xs text-amber-200 font-semibold">No Extra Charges Guarantee</span>
         </div>
+      </div>
+
+    </div>
+
+    <!-- ==============================================
+         MOBILE-FIRST APP INTERFACE (LAYER-BY-LAYER BOX ARCHITECTURE)
+         Active on Mobile Screens & Standalone APK Mode
+    ============================================== -->
+    <div class="block md:hidden max-w-md mx-auto text-left relative z-10 space-y-3.5 -mt-6">
+
+      <!-- LAYER 1: APP SEARCH & LOCATION BAR BOX -->
+      <div class="bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-white/20 text-slate-800">
+        <!-- Location Pill -->
+        <button type="button" onclick="openLocationSelectorModal()" class="w-full flex items-center justify-between pb-2 mb-2 border-b border-slate-100 text-left">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center text-xs shrink-0 shadow-inner">
+              <i class="fa-solid fa-location-crosshairs text-red-600"></i>
+            </div>
+            <div class="leading-none truncate max-w-[220px]">
+              <span class="block text-[9px] font-black uppercase text-emerald-700 tracking-tight">⚡ 15-30 MINS DOORSTEP</span>
+              <span id="mobileAppHeaderLocText" class="text-xs font-black text-slate-900 truncate block mt-0.5">📍 GPS खोज रहे हैं...</span>
+            </div>
+          </div>
+          <span class="text-[10px] font-black text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">बदलें ▾</span>
+        </button>
+
+        <!-- Search Bar -->
+        <div class="relative flex items-center">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 text-emerald-600 text-xs"></i>
+          <input type="text" id="mobileAppSearchInput" oninput="handleMobileAppSearch(this.value)"
+                 placeholder="Search 'Electrician', 'Plumber', 'Cleaning'..." 
+                 class="w-full pl-8 pr-14 py-2 bg-slate-50 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition" />
+          <button type="button" onclick="triggerDeviceLocation()" class="absolute right-2 px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-0.5">
+            <i class="fa-solid fa-crosshairs text-[9px]"></i> GPS
+          </button>
+        </div>
+
+        <!-- Quick Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pt-2 no-scrollbar text-[11px] font-bold">
+          <button type="button" onclick="handleBookServiceClick('Electrician')" class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 border border-amber-200/80 shrink-0">⚡ Electrician</button>
+          <button type="button" onclick="handleBookServiceClick('Plumber')" class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-900 border border-blue-200/80 shrink-0">⌇ Plumber</button>
+          <button type="button" onclick="handleBookServiceClick('Carpenter')" class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-950 border border-amber-200/80 shrink-0">⌑ Carpenter</button>
+          <button type="button" onclick="handleBookServiceClick('Painter')" class="px-2.5 py-1 rounded-lg bg-purple-50 text-purple-900 border border-purple-200/80 shrink-0">✦ Painter</button>
+          <button type="button" onclick="handleBookServiceClick('Cleaners')" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200/80 shrink-0">✧ Cleaning</button>
+        </div>
+      </div>
+
+      <!-- LAYER 2: 15-MIN EMERGENCY BREAKDOWN BOX (HIGH IMPACT RED) -->
+      <div onclick="triggerEmergencyBooking()" 
+           class="p-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white shadow-xl shadow-red-950/30 flex items-center justify-between cursor-pointer active:scale-98 transition border border-red-400/40">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-lg shrink-0 shadow-inner">
+            <i class="fa-solid fa-bolt-lightning text-amber-300"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-black uppercase tracking-tight">15-Min Urgent Dispatch</span>
+              <span class="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>
+            </div>
+            <p class="text-[10px] text-red-100 font-medium">Short circuit, pipe burst, instant repair pro</p>
+          </div>
+        </div>
+        <span class="bg-white text-red-600 font-black text-xs px-3 py-1.5 rounded-xl shrink-0 shadow-md flex items-center gap-1">
+          Book ➔
+        </span>
+      </div>
+
+      <!-- LAYER 3: 8 BOX-TYPE CATEGORY APP TILES (4x2 GRID - URBAN COMPANY STYLE) -->
+      <div class="bg-white/95 backdrop-blur-md rounded-2xl p-3.5 shadow-xl border border-white/20 text-slate-800">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-shapes text-emerald-600"></i> Categories (सभी सेवाएं)
+          </h3>
+          <a href="#all-services" class="text-[10px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-lg">14+ View All ➔</a>
+        </div>
+
+        <div class="grid grid-cols-4 gap-2">
+          <!-- 1. Electrician -->
+          <div onclick="handleBookServiceClick('Electrician')" class="app-tile-box bg-slate-50/80 hover:bg-white border border-slate-200/80 rounded-xl p-2 flex flex-col items-center justify-between cursor-pointer transition">
+            <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg mb-1 shadow-xs">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <span class="text-[11px] font-black text-slate-900 leading-tight">Electrician</span>
+            <span class="text-[8px] text-slate-500 font-semibold">इलेक्ट्रीशियन</span>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-1">₹199+</span>
+          </div>
+
+          <!-- 2. Plumber -->
+          <div onclick="handleBookServiceClick('Plumber')" class="app-tile-box bg-slate-50/80 hover:bg-white border border-slate-200/80 rounded-xl p-2 flex flex-col items-center justify-between cursor-pointer transition">
+            <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg mb-1 shadow-xs">
+              <i class="fa-solid fa-faucet-drip"></i>
+            </div>
+            <span class="text-[11px] font-black text-slate-900 leading-tight">Plumber</span>
+            <span class="text-[8px] text-slate-500 font-semibold">प्लंबर</span>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-1">₹149+</span>
+          </div>
+
+          <!-- 3. Carpenter -->
+          <div onclick="handleBookServiceClick('Carpenter')" class="app-tile-box bg-slate-50/80 hover:bg-white border border-slate-200/80 rounded-xl p-2 flex flex-col items-center justify-between cursor-pointer transition">
+            <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg mb-1 shadow-xs">
+              <i class="fa-solid fa-hammer"></i>
+            </div>
+            <span class="text-[11px] font-black text-slate-900 leading-tight">Carpenter</span>
+            <span class="text-[8px] text-slate-500 font-semibold">बढ़ई</span>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-1">₹249+</span>
+          </div>
+
+          <!-- 4. Painter -->
+          <div onclick="handleBookServiceClick('Painter')" class="app-tile-box bg-slate-50/80 hover:bg-white border border-slate-200/80 rounded-xl p-2 flex flex-col items-center justify-between cursor-pointer transition">
+            <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg mb-1 shadow-xs">
+              <i class="fa-solid fa-paint-roller"></i>
+            </div>
+            <span class="text-[11px] font-black text-slate-900 leading-tight">Painter</span>
+            <span class="text-[8px] text-slate-500 font-semibold">पेंटर</span>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-1">₹399+</span>
+          </div>
+
+          <!-- 5. Cleaning -->
+          <div onclick="handleBookServiceClick('Cleaners')" class="app-tile-box bg-slate-50/80 hover:bg-white border border-slate-200/80 rounded-xl p-2 flex flex-col items-center justify-between cursor-pointer transition">
+            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg mb-1 shadow-xs">
+              <i class="fa-solid fa-soap"></i>
+            </div>
+            <span class="text-[11px] font-black text-slate-900 leading-tight">Cleaning</span>
+            <span class="text-[8px] text-slate-500 font-semibold">सफाई</span>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-1">₹249+</span>
+          </div>
+
+          <!-- 6. Mechanic -->
+          <div onclick="handleBookServiceClick('Mechanics')" class="app-tile-box bg-slate-50/80 hover:bg-white border border-slate-200/80 rounded-xl p-2 flex flex-col items-center justify-between cursor-pointer transition">
+            <div class="w-11 h-11 rounded-xl bg-slate-200 text-slate-800 flex items-center justify-center text-lg mb-1 shadow-xs">
+              <i class="fa-solid fa-wrench"></i>
+            </div>
+            <span class="text-[11px] font-black text-slate-900 leading-tight">Mechanic</span>
+            <span class="text-[8px] text-slate-500 font-semibold">मैकेनिक</span>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-1">₹299+</span>
+          </div>
+
+          <!-- 7. Welder -->
+          <div onclick="handleBookServiceClick('Welder')" class="app-tile-box bg-slate-50/80 hover:bg-white border border-slate-200/80 rounded-xl p-2 flex flex-col items-center justify-between cursor-pointer transition">
+            <div class="w-11 h-11 rounded-xl bg-red-100 text-red-700 flex items-center justify-center text-lg mb-1 shadow-xs">
+              <i class="fa-solid fa-fire-burner"></i>
+            </div>
+            <span class="text-[11px] font-black text-slate-900 leading-tight">Welder</span>
+            <span class="text-[8px] text-slate-500 font-semibold">वेल्डर</span>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-1">₹349+</span>
+          </div>
+
+          <!-- 8. Labour -->
+          <div onclick="handleBookServiceClick('Labour')" class="app-tile-box bg-slate-50/80 hover:bg-white border border-slate-200/80 rounded-xl p-2 flex flex-col items-center justify-between cursor-pointer transition">
+            <div class="w-11 h-11 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-lg mb-1 shadow-xs">
+              <i class="fa-solid fa-person-digging"></i>
+            </div>
+            <span class="text-[11px] font-black text-slate-900 leading-tight">Labour</span>
+            <span class="text-[8px] text-slate-500 font-semibold">मजदूर</span>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-1">₹399+</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAYER 4: POPULAR SERVICES (2-COLUMN BOX CARDS) -->
+      <div class="bg-white/95 backdrop-blur-md rounded-2xl p-3.5 shadow-xl border border-white/20 text-slate-800">
+        <div class="flex items-center justify-between mb-2.5">
+          <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-fire text-emerald-600"></i> Most Booked Right Now
+          </h3>
+          <span class="text-[10px] font-bold text-slate-500">★ 4.9 Average Rating</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <!-- Card 1 -->
+          <div onclick="handleBookServiceClick('Electrician')" class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between cursor-pointer active:scale-95 transition">
+            <div>
+              <span class="text-[9px] font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">★ 4.9 (1.2k)</span>
+              <h4 class="text-xs font-black text-slate-900 mt-1.5">Fan & Switch Repair</h4>
+              <p class="text-[10px] text-slate-500 leading-tight">Short wire & board fix</p>
+            </div>
+            <div class="mt-2 pt-2 border-t border-slate-200 flex items-center justify-between">
+              <span class="text-xs font-black text-slate-900">₹149</span>
+              <span class="text-[10px] font-black text-white bg-emerald-600 px-2 py-0.5 rounded-lg">Book</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div onclick="handleBookServiceClick('Plumber')" class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between cursor-pointer active:scale-95 transition">
+            <div>
+              <span class="text-[9px] font-black text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded">★ 4.8 (940)</span>
+              <h4 class="text-xs font-black text-slate-900 mt-1.5">Tap & Leakage Fix</h4>
+              <p class="text-[10px] text-slate-500 leading-tight">Tank & pipe fitting</p>
+            </div>
+            <div class="mt-2 pt-2 border-t border-slate-200 flex items-center justify-between">
+              <span class="text-xs font-black text-slate-900">₹199</span>
+              <span class="text-[10px] font-black text-white bg-emerald-600 px-2 py-0.5 rounded-lg">Book</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAYER 5: 100% SECURITY & FOUNDER TRUST GUARANTEE BOX -->
+      <div class="p-3.5 bg-gradient-to-r from-[#071228] via-[#0c1e3d] to-[#042f2e] rounded-2xl text-white border border-blue-900/60 shadow-lg flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base shrink-0 border border-emerald-400/30">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <span class="block text-xs font-black">100% Doorstep OTP Security</span>
+            <span class="block text-[10px] text-slate-300">Verified Pros • Founder: Shivam Pandat</span>
+          </div>
+        </div>
+        <a href="tel:+919899862721" class="text-[11px] font-black bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-xl shrink-0 flex items-center gap-1 shadow-md">
+          <i class="fa-solid fa-phone text-amber-300 text-[10px]"></i> Call
+        </a>
+      </div>
+
+      <!-- LAYER 6: WORKER REGISTRATION & EARNING BOX -->
+      <div class="p-3.5 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-2xl text-white border border-blue-500/30 shadow-lg flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-base shrink-0 border border-blue-400/30">
+            <i class="fa-solid fa-id-card-clip"></i>
+          </div>
+          <div>
+            <span class="block text-xs font-black">Karigar & Worker Banein</span>
+            <span class="block text-[10px] text-blue-200">Earn daily • No extra charges</span>
+          </div>
+        </div>
+        <a href="#worker-register" class="text-[11px] font-black bg-blue-500 hover:bg-blue-400 text-white px-3 py-1.5 rounded-xl shrink-0 flex items-center gap-1 shadow-md">
+          Join ➔
+        </a>
       </div>
 
     </div>
@@ -3524,6 +3754,57 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- ==============================================
+       14. MOBILE BOTTOM NAVIGATION DOCK (5-TAB NATIVE APP DOCK)
+  ============================================== -->
+  <nav id="mobileAppBottomNav" class="mobile-app-dock lg:hidden" aria-label="Mobile Navigation">
+    <a href="#home" class="mobile-dock-btn active" onclick="activateMobileDockTab(this)">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="#all-services" class="mobile-dock-btn" onclick="activateMobileDockTab(this)">
+      <i class="fa-solid fa-shapes"></i>
+      <span>Services</span>
+    </a>
+    <button type="button" onclick="triggerEmergencyBooking()" class="mobile-dock-btn urgent">
+      <div class="relative">
+        <i class="fa-solid fa-bolt-lightning text-red-500"></i>
+        <span class="emergency-indicator absolute -top-1 -right-1"></span>
+      </div>
+      <span class="text-red-600 font-black">Urgent</span>
+    </button>
+    <button type="button" onclick="openMyBookingsModal()" class="mobile-dock-btn relative">
+      <div class="relative">
+        <i class="fa-solid fa-truck-fast"></i>
+        <span id="mobileDockOrderDot" class="hidden absolute -top-1 -right-1.5 w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+      </div>
+      <span>Orders</span>
+    </button>
+    <button type="button" onclick="openCustomerAuthModal('login')" class="mobile-dock-btn">
+      <i class="fa-solid fa-user"></i>
+      <span id="mobileDockProfileLabel">Account</span>
+    </button>
+  </nav>
+
+  <!-- FLOATING MINI ORDER TRACKER (BLINKIT STYLE - SHOWN WHEN ORDER ACTIVE) -->
+  <div id="mobileFloatingOrderCard" class="hidden fixed bottom-16 left-3 right-3 z-40 bg-slate-900/95 text-white p-3 rounded-2xl border border-emerald-500/50 shadow-2xl backdrop-blur-md flex items-center justify-between">
+    <div class="flex items-center gap-2.5 truncate">
+      <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shrink-0">
+        <i class="fa-solid fa-person-walking-luggage"></i>
+      </div>
+      <div class="truncate text-left">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="floatingOrderTitle" class="text-xs font-black truncate">Live Order Active</span>
+        </div>
+        <span id="floatingOrderSub" class="text-[10px] text-slate-300 block truncate">Technician dispatching...</span>
+      </div>
+    </div>
+    <button type="button" onclick="openMyBookingsModal()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-3 py-1.5 rounded-xl shrink-0 shadow transition flex items-center gap-1">
+      Track ➔
+    </button>
   </div>
 
   <!-- TOAST NOTIFICATION -->

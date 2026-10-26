@@ -352,3 +352,183 @@ h1, h2, h3, h4, .font-heading {
 .custom-worker-pin div:first-child {
   animation: tracker-radar-ping 1.8s infinite ease-out;
 }
+
+
+/* ===================================================
+   MOBILE-FIRST APP INTERFACE (BLINKIT / SWIGGY / URBAN COMPANY STYLE)
+   Layer-By-Layer Box Architecture
+=================================================== */
+
+/* Safe area padding for notch & gesture nav */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Native App Feel */
+body {
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+}
+
+/* Fixed Bottom Navigation Dock */
+.mobile-app-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+  padding-bottom: max(6px, var(--safe-bottom));
+  padding-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.mobile-dock-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 4px 8px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 700;
+  transition: all 0.15s ease;
+  border-radius: 12px;
+  position: relative;
+  min-width: 60px;
+}
+
+.mobile-dock-btn:active {
+  transform: scale(0.92);
+}
+
+.mobile-dock-btn.active, .mobile-dock-btn:hover {
+  color: #059669;
+}
+
+.mobile-dock-btn.urgent {
+  color: #dc2626;
+}
+
+.mobile-dock-btn i {
+  font-size: 18px;
+  transition: transform 0.15s ease;
+}
+
+.mobile-dock-btn:active i {
+  transform: translateY(-2px);
+}
+
+/* Layer-by-Layer Box Container */
+.mobile-layer-box {
+  background: #ffffff;
+  border-radius: 1.25rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04), 0 2px 4px -1px rgba(15, 23, 42, 0.02);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mobile-layer-box:active {
+  transform: scale(0.98);
+}
+
+/* Category Grid App Tiles */
+.app-tile-box {
+  background: #ffffff;
+  border-radius: 1.25rem;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  text-align: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.app-tile-box:active {
+  transform: scale(0.94);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+
+.app-tile-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 8px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.app-tile-box:active .app-tile-icon {
+  transform: scale(1.08);
+}
+
+/* Mobile Bottom Sheet Modals */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(72px + var(--safe-bottom)) !important;
+  }
+
+  .modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .modal-overlay > div {
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 88vh !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 1.75rem !important;
+    border-top-right-radius: 1.75rem !important;
+    animation: slideUpSheet 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  @keyframes slideUpSheet {
+    from {
+      transform: translateY(100%);
+      opacity: 0.7;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Sheet handle bar */
+  .sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: #cbd5e1;
+    border-radius: 9999px;
+    margin: 8px auto 4px auto;
+  }
+}
+
+/* Native App UA Mode (.is-app-mode) */
+body.is-app-mode #topNoticeBar {
+  display: none !important;
+}
+
+body.is-app-mode .startup-nav {
+  top: 0;
+  padding-top: max(4px, var(--safe-top));
+}
