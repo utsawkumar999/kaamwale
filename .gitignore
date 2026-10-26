@@ -17,3 +17,8 @@ scratch/
 # Operating System files
 Thumbs.db
 .DS_Store
+
+# Android temporary build files
+android-build/bin/
+android-build/obj/
+*.idsig

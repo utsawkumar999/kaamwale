@@ -5792,3 +5792,91 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }, 12000);
 });
+
+// ==========================================
+// PWA & APP DOWNLOAD MODAL HANDLERS
+// ==========================================
+let deferredAppPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredAppPrompt = e;
+  console.log('⚡ PWA installation prompt ready');
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then((reg) => {
+      console.log('✅ ServiceWorker registered:', reg.scope);
+    }).catch((err) => {
+      console.log('⚠️ ServiceWorker error:', err);
+    });
+  });
+}
+
+function openAppDownloadModal(tab = 'android') {
+  const modal = document.getElementById('appDownloadModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    switchAppTab(tab);
+  }
+}
+
+function closeAppDownloadModal() {
+  const modal = document.getElementById('appDownloadModal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+}
+
+function switchAppTab(tab) {
+  const androidBtn = document.getElementById('appTabAndroidBtn');
+  const iosBtn = document.getElementById('appTabIosBtn');
+  const androidContent = document.getElementById('appTabAndroidContent');
+  const iosContent = document.getElementById('appTabIosContent');
+
+  if (!androidBtn || !iosBtn || !androidContent || !iosContent) return;
+
+  if (tab === 'ios') {
+    androidBtn.className = "py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 bg-white text-slate-700 hover:bg-slate-200 transition";
+    iosBtn.className = "py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 bg-slate-900 text-white shadow-sm transition";
+    androidContent.classList.add('hidden');
+    iosContent.classList.remove('hidden');
+  } else {
+    androidBtn.className = "py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 bg-emerald-600 text-white shadow-sm transition";
+    iosBtn.className = "py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 bg-white text-slate-700 hover:bg-slate-200 transition";
+    androidContent.classList.remove('hidden');
+    iosContent.classList.add('hidden');
+  }
+}
+
+function handleApkDownloadClick() {
+  if (typeof showToast === 'function') {
+    showToast('📥 KaamWale.apk डाउनलोड शुरू हो गया है!');
+  }
+}
+
+function triggerPwaInstall() {
+  if (deferredAppPrompt) {
+    deferredAppPrompt.prompt();
+    deferredAppPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        if (typeof showToast === 'function') {
+          showToast('🎉 KaamWale App सफलतापूर्वक इंस्टॉल हो गया!');
+        }
+      }
+      deferredAppPrompt = null;
+    });
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('💡 Browser menu (3 dots) par jakar "Install App" ya "Add to Home screen" chunein.');
+    }
+  }
+}
+
+// Expose functions globally
+window.openAppDownloadModal = openAppDownloadModal;
+window.closeAppDownloadModal = closeAppDownloadModal;
+window.switchAppTab = switchAppTab;
+window.handleApkDownloadClick = handleApkDownloadClick;
+window.triggerPwaInstall = triggerPwaInstall;
+

@@ -69,7 +69,9 @@ const MIME_TYPES = {
   '.jpeg': 'image/jpeg',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
-  '.zip': 'application/zip'
+  '.zip': 'application/zip',
+  '.apk': 'application/vnd.android.package-archive',
+  '.webmanifest': 'application/manifest+json'
 };
 
 function formatAdminWhatsAppNotification(order) {
@@ -1506,7 +1508,31 @@ const server = http.createServer((req, res) => {
     reqPath = '/index.html';
   }
 
-  const filePath = path.join(BASE_DIR, decodeURIComponent(reqPath));
+  // Direct APK download route aliases
+  if (reqPath.toLowerCase() === '/download/kaamwale.apk' || 
+      reqPath.toLowerCase() === '/kaamwale.apk' || 
+      reqPath.toLowerCase() === '/api/download/apk') {
+    const apkFilePath = path.join(BASE_DIR, 'KaamWale.apk');
+    if (fs.existsSync(apkFilePath)) {
+      res.writeHead(200, {
+        'Content-Type': 'application/vnd.android.package-archive',
+        'Content-Disposition': 'attachment; filename="KaamWale.apk"',
+        'Content-Length': fs.statSync(apkFilePath).size
+      });
+      fs.createReadStream(apkFilePath).pipe(res);
+      return;
+    }
+  }
+
+  let filePath = path.join(BASE_DIR, decodeURIComponent(reqPath));
+
+  // Fallback to public folder if asset is located inside public/
+  if (!fs.existsSync(filePath)) {
+    const publicPath = path.join(BASE_DIR, 'public', decodeURIComponent(reqPath));
+    if (fs.existsSync(publicPath)) {
+      filePath = publicPath;
+    }
+  }
 
   // Security check: ensure filePath is within BASE_DIR
   if (!filePath.startsWith(BASE_DIR)) {
@@ -1533,13 +1559,18 @@ const server = http.createServer((req, res) => {
 
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+    const headers = { 'Content-Type': contentType };
+
+    if (ext === '.apk') {
+      headers['Content-Disposition'] = 'attachment; filename="KaamWale.apk"';
+    }
 
     fs.readFile(filePath, (readErr, data) => {
       if (readErr) {
         res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.end('500 Internal Server Error');
       } else {
-        res.writeHead(200, { 'Content-Type': contentType });
+        res.writeHead(200, headers);
         res.end(data);
       }
     });

@@ -43,7 +43,17 @@
   - **UPI ID**: `9899862721@pthdfc`
   - **Account Number**: `2948684915` (IFSC: `KKBK0005304`)
 
-### 6. 👑 Super Admin Dashboard
+### 6. 📱 Mobile Application (Android APK & Apple iOS)
+- **🤖 Android Standalone App (.APK)**:
+  - Direct download link: `https://kaamwale-4vg0.onrender.com/download/kaamwale.apk`
+  - Digitally signed release APK (v1, v2, v3 schemes) with 30-year validity.
+  - Universal hardware & OS support: Android 5.0 (Lollipop) through Android 15+.
+  - Fully native WebView with UPI intent handler (Paytm, PhonePe, GPay), camera & file upload, GPS location tracking.
+- **🍎 Apple iOS (iPhone & iPad)**:
+  - Official Progressive Web App (PWA) with Add to Home Screen integration.
+  - Standalone full-screen experience with native launch screen and app icon.
+
+### 7. 👑 Super Admin Dashboard
 - Live real-time dispatch dashboard for Shivam Pandat (+91 9899862721).
 - Instant approval, technician assignment, and payment reconciliation.
 

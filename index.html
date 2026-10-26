@@ -80,6 +80,15 @@
   }
   </script>
   
+  <!-- PWA & Mobile App Support -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#059669" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="KaamWale" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
@@ -244,6 +253,17 @@
 
         <!-- Right Side: Auth / Profile Button + Track Order -->
         <div class="flex items-center gap-2.5">
+          <!-- Download Mobile App Button -->
+          <button id="navDownloadAppBtn" onclick="openAppDownloadModal()" type="button" 
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs shadow-sm hover:shadow transition group shrink-0" title="Download Mobile App for Android (.apk) & iOS">
+            <div class="flex items-center gap-1">
+              <i class="fa-brands fa-android text-xs sm:text-sm text-green-300"></i>
+              <i class="fa-brands fa-apple text-xs sm:text-sm text-white"></i>
+            </div>
+            <span class="hidden sm:inline">App</span>
+            <span class="text-[9px] bg-white/20 px-1.5 py-0.5 rounded-full font-bold uppercase hidden md:inline">APK</span>
+          </button>
+
           <!-- Professional Blinkit/Rapido Style Track Order Button -->
           <button id="navTrackOrderBtn" onclick="openMyBookingsModal()" type="button" 
                   class="relative inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-blue-50 via-sky-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 font-black text-xs border border-blue-300 shadow-sm hover:shadow transition group">
@@ -309,6 +329,18 @@
           <span>Admin</span>
         </button>
       </div>
+      <button onclick="toggleMobileMenu(); openAppDownloadModal();" class="w-full text-left font-black text-emerald-800 bg-emerald-50 hover:bg-emerald-100 p-2.5 rounded-xl flex items-center justify-between border border-emerald-200 shadow-sm transition">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </div>
+          <div>
+            <span class="block text-xs font-black text-emerald-950">📱 Download Mobile App</span>
+            <span class="block text-[10px] text-emerald-700 font-bold">Android APK & iOS Install</span>
+          </div>
+        </div>
+        <span class="text-[10px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full">Free</span>
+      </button>
       <button onclick="toggleMobileMenu(); openMyBookingsModal();" class="w-full text-left font-bold text-blue-700 py-2 flex items-center gap-2 border-b border-slate-100">
         <i class="fa-solid fa-clock-rotate-left"></i> Track My Orders (ऑर्डर स्टेटस)
       </button>
@@ -428,6 +460,12 @@
         <button onclick="triggerEmergencyBooking()" 
                 class="btn-red px-6 py-3.5 rounded-2xl text-sm font-black shadow-xl shadow-red-600/30 transition flex items-center gap-2">
           <i class="fa-solid fa-bolt-lightning text-amber-300"></i> 🚨 URGENT SERVICE (15 Min Dispatch)
+        </button>
+        <button onclick="openAppDownloadModal()" 
+                class="px-6 py-3.5 rounded-2xl text-sm font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white shadow-xl shadow-emerald-950/40 transition flex items-center gap-2 border border-emerald-400/40">
+          <i class="fa-brands fa-android text-base text-green-300"></i>
+          <i class="fa-brands fa-apple text-base text-white"></i>
+          <span>📱 Download Mobile App (.APK)</span>
         </button>
         <a href="#worker-register" 
            class="btn-blue px-6 py-3.5 rounded-2xl text-sm font-bold transition flex items-center gap-2 shadow-xl shadow-blue-600/30">
@@ -697,6 +735,108 @@
           <button onclick="triggerEmergencyBooking()" class="btn-emerald py-3.5 px-5 text-xs sm:text-sm font-black flex items-center gap-2 shadow-lg shadow-emerald-600/30">
             <i class="fa-solid fa-bolt"></i> Book Urgent Pro
           </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================================
+       APP DOWNLOAD BANNER (ANDROID APK & iOS PWA)
+  ============================================== -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-900 via-slate-900 to-navy-950 p-8 sm:p-12 text-white shadow-2xl border border-emerald-500/30">
+      <!-- Glow ambient lights -->
+      <div class="absolute -right-16 -top-16 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- Left info -->
+        <div class="lg:col-span-7 space-y-4 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 px-3.5 py-1 rounded-full text-xs font-black uppercase text-emerald-300">
+            <i class="fa-solid fa-mobile-screen-button"></i> 100% Free Official Mobile App
+          </div>
+          <h3 class="text-2xl sm:text-4xl font-black tracking-tight text-white leading-tight">
+            KaamWale App Apne Mobile Par Download Karein
+          </h3>
+          <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-xl">
+            Booking ab aur bhi aasan! KaamWale mobile application Android phones ke liye direct <strong class="text-emerald-400 font-bold">.APK file</strong> aur iPhones ke liye <strong class="text-white font-bold">iOS Web App</strong> ke roop mein uplabdh hai. Zero charges, fast 15-min booking, aur live worker GPS tracking!
+          </p>
+
+          <!-- Badges -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1 text-[11px] font-bold text-slate-300">
+            <span class="bg-white/10 px-2.5 py-1 rounded-lg border border-white/10 flex items-center gap-1.5">
+              <i class="fa-brands fa-android text-emerald-400"></i> Android 5.0 - 15+
+            </span>
+            <span class="bg-white/10 px-2.5 py-1 rounded-lg border border-white/10 flex items-center gap-1.5">
+              <i class="fa-brands fa-apple text-slate-100"></i> iOS (iPhone/iPad)
+            </span>
+            <span class="bg-white/10 px-2.5 py-1 rounded-lg border border-white/10 flex items-center gap-1.5">
+              <i class="fa-solid fa-shield-halved text-teal-400"></i> Signed & Safe
+            </span>
+            <span class="bg-white/10 px-2.5 py-1 rounded-lg border border-white/10 flex items-center gap-1.5">
+              <i class="fa-solid fa-bolt text-amber-400"></i> Super Light (~50 KB)
+            </span>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-3">
+            <a href="/download/kaamwale.apk" download="KaamWale.apk" 
+               class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-5 py-3.5 rounded-2xl text-xs sm:text-sm flex items-center gap-2.5 shadow-lg shadow-emerald-500/30 transition transform hover:-translate-y-0.5">
+              <i class="fa-brands fa-android text-lg"></i>
+              <div class="text-left">
+                <span class="block text-[10px] uppercase font-black text-emerald-950 leading-none">Direct Download</span>
+                <span class="block font-black text-xs sm:text-sm">Download Android .APK</span>
+              </div>
+              <i class="fa-solid fa-arrow-down ml-1"></i>
+            </a>
+
+            <button onclick="openAppDownloadModal('ios')" type="button" 
+                    class="bg-white/15 hover:bg-white/25 text-white font-black px-5 py-3.5 rounded-2xl text-xs sm:text-sm flex items-center gap-2.5 border border-white/20 transition transform hover:-translate-y-0.5">
+              <i class="fa-brands fa-apple text-lg"></i>
+              <div class="text-left">
+                <span class="block text-[10px] uppercase font-black text-slate-300 leading-none">Apple iOS</span>
+                <span class="block font-black text-xs sm:text-sm">Install on iPhone / iPad</span>
+              </div>
+            </button>
+
+            <button onclick="openAppDownloadModal('android')" type="button" 
+                    class="text-xs text-emerald-300 hover:text-white underline font-bold px-2 py-1">
+              Installation Guide ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Right graphic / mockup preview -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-64 p-4 rounded-3xl bg-slate-950/80 border-2 border-emerald-500/40 shadow-2xl backdrop-blur-md">
+            <div class="w-12 h-1 bg-slate-700 rounded-full mx-auto mb-3"></div>
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950 to-slate-900 border border-emerald-600/30 text-center space-y-3">
+              <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-emerald-700 to-teal-500 flex items-center justify-center text-white text-2xl font-black shadow-lg">
+                KW
+              </div>
+              <h4 class="text-base font-black text-white">KaamWale Mobile App</h4>
+              <p class="text-[11px] text-slate-400">Official App for Customers & Workers</p>
+              <div class="space-y-1.5 text-[11px] text-left bg-black/40 p-2.5 rounded-xl border border-white/5">
+                <div class="flex items-center gap-1.5 text-emerald-300 font-semibold">
+                  <i class="fa-solid fa-check text-[10px]"></i> Instant 1-Tap Booking
+                </div>
+                <div class="flex items-center gap-1.5 text-emerald-300 font-semibold">
+                  <i class="fa-solid fa-check text-[10px]"></i> Live GPS Tracking Map
+                </div>
+                <div class="flex items-center gap-1.5 text-emerald-300 font-semibold">
+                  <i class="fa-solid fa-check text-[10px]"></i> Doorstep UPI & Cash
+                </div>
+                <div class="flex items-center gap-1.5 text-emerald-300 font-semibold">
+                  <i class="fa-solid fa-check text-[10px]"></i> 100% Verified Partners
+                </div>
+              </div>
+              <div class="pt-1">
+                <a href="/download/kaamwale.apk" download="KaamWale.apk" class="block w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow transition">
+                  📥 Free Download APK
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1101,9 +1241,9 @@
        11. STARTUP FOOTER (BLUE-RED-GREEN THEME)
   ============================================== -->
   <footer class="bg-[#071228] text-slate-400 py-16 px-4 sm:px-6 lg:px-8 border-t-4 border-t-blue-600">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
       
-      <div class="md:col-span-2">
+      <div class="lg:col-span-2">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-10 h-10 bg-gradient-to-tr from-blue-700 via-blue-900 to-slate-900 border border-blue-400/40 rounded-xl flex items-center justify-center text-white text-lg font-bold">
             <i class="fa-solid fa-screwdriver-wrench text-amber-400"></i>
@@ -1138,13 +1278,44 @@
       </div>
 
       <div>
-        <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-emerald-800 pb-2">Popular Categories</h4>
+        <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-emerald-800 pb-2">Categories</h4>
         <ul class="space-y-1.5 text-xs text-slate-300">
-          <li>⚡ Electrician • ⌇ Plumber • ⌑ Carpenter</li>
-          <li>✦ Painter • ⚙ Mechanics • ✧ Cleaners</li>
-          <li>🏠 Housekeeper • 👷 Labour • 🔥 Welder</li>
-          <li>🍳 Cook / Kitchen Helper • 👔 Ironing Service</li>
+          <li>⚡ Electrician</li>
+          <li>⌇ Plumber</li>
+          <li>⌑ Carpenter</li>
+          <li>✦ Painter</li>
+          <li>⚙ Mechanics</li>
+          <li>✧ Cleaners</li>
+          <li>🏠 Housekeeper</li>
+          <li>👷 Labour</li>
         </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-teal-800 pb-2 flex items-center gap-2">
+          <i class="fa-solid fa-mobile-screen-button text-emerald-400"></i> Mobile App
+        </h4>
+        <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+          KaamWale app install karein aur payein ultra-fast service booking.
+        </p>
+        <div class="space-y-2">
+          <a href="/download/kaamwale.apk" download="KaamWale.apk" 
+             class="w-full bg-emerald-950/80 hover:bg-emerald-800 border border-emerald-500/40 p-2.5 rounded-xl flex items-center gap-2.5 transition text-white group">
+            <i class="fa-brands fa-android text-emerald-400 text-xl group-hover:scale-110 transition shrink-0"></i>
+            <div>
+              <span class="block text-[9px] uppercase font-bold text-emerald-300">Android App</span>
+              <span class="block text-xs font-black">Download .APK</span>
+            </div>
+          </a>
+          <button type="button" onclick="openAppDownloadModal('ios')" 
+                  class="w-full bg-slate-900/80 hover:bg-slate-800 border border-slate-700/60 p-2.5 rounded-xl flex items-center gap-2.5 transition text-white text-left group">
+            <i class="fa-brands fa-apple text-white text-xl group-hover:scale-110 transition shrink-0"></i>
+            <div>
+              <span class="block text-[9px] uppercase font-bold text-slate-400">iOS (iPhone/iPad)</span>
+              <span class="block text-xs font-black">Add to Home Screen</span>
+            </div>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -3162,6 +3333,193 @@
           <i class="fa-solid fa-shield-halved text-emerald-600"></i> 100% सुरक्षित भुगतान
         </span>
         <button type="button" onclick="closeCustomerUpiPaymentModal()" class="text-slate-500 hover:text-slate-800 font-bold">
+          बंद करें (Close)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       13. APP DOWNLOAD MODAL (ANDROID .APK & iOS PWA)
+  ============================================== -->
+  <div id="appDownloadModal" class="modal-overlay fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden border border-slate-200 flex flex-col max-h-[92vh]">
+      <!-- Header -->
+      <div class="p-5 bg-gradient-to-r from-emerald-800 via-teal-900 to-navy-950 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md border border-white/20">
+            KW
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase text-emerald-300 tracking-wider">OFFICIAL MOBILE APPLICATION</span>
+            <h3 class="text-base sm:text-lg font-black flex items-center gap-2">
+              KaamWale Mobile App
+            </h3>
+            <p class="text-[11px] text-slate-300">Android (.APK) & iOS (iPhone/iPad) Dono Ke Liye</p>
+          </div>
+        </div>
+        <button onclick="closeAppDownloadModal()" type="button" class="text-slate-400 hover:text-white text-2xl font-bold p-1 transition" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="p-3 bg-slate-100 border-b border-slate-200 grid grid-cols-2 gap-2 shrink-0">
+        <button id="appTabAndroidBtn" type="button" onclick="switchAppTab('android')" 
+                class="py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 bg-emerald-600 text-white shadow-sm transition">
+          <i class="fa-brands fa-android text-base"></i>
+          <span>Android (.APK)</span>
+        </button>
+        <button id="appTabIosBtn" type="button" onclick="switchAppTab('ios')" 
+                class="py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 bg-white text-slate-700 hover:bg-slate-200 transition">
+          <i class="fa-brands fa-apple text-base"></i>
+          <span>iOS (iPhone / iPad)</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Tab Content Body -->
+      <div class="p-5 overflow-y-auto space-y-4 flex-1 text-slate-800 text-xs">
+        
+        <!-- ANDROID TAB CONTENT -->
+        <div id="appTabAndroidContent" class="space-y-4">
+          <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="bg-emerald-700 text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full">Recommended</span>
+              <span class="text-[11px] text-slate-500 font-bold">Version 1.0.0 (Release)</span>
+            </div>
+
+            <div>
+              <h4 class="text-sm font-black text-emerald-950">Android Standalone APK</h4>
+              <p class="text-xs text-slate-600 mt-0.5">
+                Direct installable APK file. 100% virus-free, secure aur digital signature verified.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 text-[10px] text-slate-600 font-bold">
+              <span class="bg-white px-2 py-0.5 rounded border border-emerald-200">📦 Size: ~50 KB (Ultra Light)</span>
+              <span class="bg-white px-2 py-0.5 rounded border border-emerald-200">📱 Android 5.0 to 15+</span>
+              <span class="bg-white px-2 py-0.5 rounded border border-emerald-200">⚡ Fast & Smooth</span>
+            </div>
+
+            <!-- Direct Download Button -->
+            <a href="/download/kaamwale.apk" download="KaamWale.apk" onclick="handleApkDownloadClick()"
+               class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition transform hover:-translate-y-0.5">
+              <i class="fa-brands fa-android text-base"></i>
+              <span>📥 Download KaamWale.apk (Direct)</span>
+            </a>
+          </div>
+
+          <!-- Compatibility Guarantee -->
+          <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+            <p class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i> All Mobile Devices Supported:
+            </p>
+            <p class="text-[11px] text-slate-600 leading-relaxed">
+              Samsung, Xiaomi/Redmi, Realme, Vivo, Oppo, OnePlus, Poco, Motorola, Google Pixel aur sabhi Android phones par 100% perfectly kaam karta hai.
+            </p>
+          </div>
+
+          <!-- 3-Step Install Guide -->
+          <div class="p-3.5 bg-blue-50 rounded-2xl border border-blue-200 space-y-2.5">
+            <p class="font-black text-blue-950 text-xs">📲 APK Install Kaise Karein? (3 Aasan Steps):</p>
+            <ol class="space-y-1.5 text-[11px] text-blue-900 list-decimal list-inside font-medium leading-relaxed">
+              <li>Upar diye <strong>"Download KaamWale.apk"</strong> button par click karein.</li>
+              <li>Download complete hone par notification par tap karein. Agar phone prompt kare <em>"Settings -> Allow Unknown Apps / Allow from this source"</em>, toh use ON karein.</li>
+              <li><strong>"Install"</strong> dabayein aur KaamWale app instant launch karein!</li>
+            </ol>
+          </div>
+
+          <!-- Alternative 1-Click PWA -->
+          <div class="pt-1 text-center">
+            <p class="text-[11px] text-slate-500 mb-2">Bina file download kiye install karna chahte hain?</p>
+            <button type="button" onclick="triggerPwaInstall()" 
+                    class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-black py-2.5 px-3 rounded-xl text-xs border border-slate-300 transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-bolt text-amber-500"></i>
+              <span>1-Click Chrome Install (Add to Home Screen)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- IOS TAB CONTENT -->
+        <div id="appTabIosContent" class="hidden space-y-4">
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="bg-slate-900 text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full">Apple Official PWA</span>
+              <span class="text-[11px] text-slate-500 font-bold">iPhone & iPad</span>
+            </div>
+
+            <div>
+              <h4 class="text-sm font-black text-slate-950">iOS Web App (Add to Home Screen)</h4>
+              <p class="text-xs text-slate-600 mt-0.5">
+                Apple iOS mein raw <code>.apk</code> files directly run nahi hoti hain. Apple ne official <strong>Web App (PWA)</strong> feature diya hai jo bina App Store ke 100% real native app ki tarah aapke iPhone par chalta hai.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 text-[10px] text-slate-600 font-bold">
+              <span class="bg-white px-2 py-0.5 rounded border border-slate-200">🍎 No App Store Account Needed</span>
+              <span class="bg-white px-2 py-0.5 rounded border border-slate-200">⚡ Full Screen Native Feel</span>
+              <span class="bg-white px-2 py-0.5 rounded border border-slate-200">🔔 Instant 1-Tap Access</span>
+            </div>
+          </div>
+
+          <!-- 4-Step iOS Guide with Icons -->
+          <div class="p-4 bg-sky-50 rounded-2xl border border-sky-200 space-y-3">
+            <p class="font-black text-sky-950 text-xs flex items-center gap-1.5">
+              <i class="fa-brands fa-apple text-slate-900 text-sm"></i> iPhone / iPad par Install Karne Ka Tarika:
+            </p>
+            
+            <div class="space-y-2.5 text-xs text-sky-950">
+              <div class="flex items-start gap-2.5">
+                <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-xs shrink-0 mt-0.5">1</div>
+                <p class="text-[11px] leading-relaxed">
+                  Apne iPhone par <strong>Safari browser</strong> kholein aur website par aayein: <code>kaamwale-4vg0.onrender.com</code>
+                </p>
+              </div>
+
+              <div class="flex items-start gap-2.5">
+                <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-xs shrink-0 mt-0.5">2</div>
+                <p class="text-[11px] leading-relaxed">
+                  Safari ke bottom bar mein <strong>Share Button</strong> (<i class="fa-solid fa-arrow-up-from-bracket text-blue-600"></i>) par tap karein.
+                </p>
+              </div>
+
+              <div class="flex items-start gap-2.5">
+                <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-xs shrink-0 mt-0.5">3</div>
+                <p class="text-[11px] leading-relaxed">
+                  Niche scroll karein aur <strong>"Add to Home Screen" (होम स्क्रीन पर जोड़ें)</strong> par tap karein.
+                </p>
+              </div>
+
+              <div class="flex items-start gap-2.5">
+                <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-black text-xs shrink-0 mt-0.5">4</div>
+                <p class="text-[11px] leading-relaxed">
+                  Top right mein <strong>"Add"</strong> dabayein. KaamWale ka app icon aapke iPhone screen par ready ho jayega!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Share Link to iPhone -->
+          <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between gap-3">
+            <div class="truncate">
+              <span class="block text-[10px] text-slate-400 font-bold uppercase">Website Link for iPhone:</span>
+              <span class="block text-xs font-mono font-bold text-slate-800 truncate">https://kaamwale-4vg0.onrender.com</span>
+            </div>
+            <button type="button" onclick="copyPaymentText('https://kaamwale-4vg0.onrender.com', 'iPhone Link')" 
+                    class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shrink-0 transition flex items-center gap-1">
+              <i class="fa-solid fa-copy"></i> Copy
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 shrink-0">
+        <span class="text-[10px] flex items-center gap-1 text-emerald-700 font-bold">
+          <i class="fa-solid fa-shield-halved"></i> 100% Free & Safe
+        </span>
+        <button type="button" onclick="closeAppDownloadModal()" class="text-slate-500 hover:text-slate-800 font-bold">
           बंद करें (Close)
         </button>
       </div>
