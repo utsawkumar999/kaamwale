@@ -67,6 +67,7 @@
 
 ## 📞 Support & Inquiries
 - **Founder & Owner**: Shivam Pandat
+- **Lead Developer**: Utsaw Kumar
 - **Mobile / WhatsApp**: +91 9899862721
 - **Email**: shivampandat819@gmail.com
 - **Live URL**: [https://kaamwale-4vg0.onrender.com](https://kaamwale-4vg0.onrender.com)
