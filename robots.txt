@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /admin
 Disallow: /api/
 
+Sitemap: https://kaamwale-4vg0.onrender.com/sitemap.xml
 Sitemap: https://kaamwale.com/sitemap.xml
