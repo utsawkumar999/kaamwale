@@ -54,6 +54,14 @@ public class MainActivity extends Activity {
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
 
+        // Native Vertical Scroll Configuration
+        webView.setVerticalScrollBarEnabled(true);
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            webView.setOverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS);
+        }
+
         // Force Android Mobile User-Agent + KaamWaleApp identifier
         settings.setUserAgentString("Mozilla/5.0 (Linux; Android 14; Mobile; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36 KaamWaleApp/1.0.0");
 

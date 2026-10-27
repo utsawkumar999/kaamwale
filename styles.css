@@ -481,7 +481,7 @@ body {
 }
 
 /* ===================================================
-   MODALS: ALWAYS OPEN AT UPPER SCREEN (TOP) - NO SCROLLING NEEDED
+   MODALS & POPUP PANELS: EFFORTLESS SMOOTH TOUCH SCROLLING
 =================================================== */
 .modal-overlay {
   position: fixed !important;
@@ -489,19 +489,22 @@ body {
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
+  width: 100% !important;
+  height: 100% !important;
+  height: 100dvh !important;
   z-index: 99999 !important;
   display: flex !important;
-  align-items: flex-start !important; /* UPPER SCREEN ALIGNMENT */
+  align-items: flex-start !important;
   justify-content: center !important;
-  padding: 12px 10px !important;
-  padding-top: max(16px, env(safe-area-inset-top, 16px)) !important;
+  padding: 8px !important;
+  padding-top: max(10px, env(safe-area-inset-top, 10px)) !important;
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
-  background: rgba(7, 18, 40, 0.82) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  overscroll-behavior: contain !important;
+  background: rgba(7, 18, 40, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
 }
 
 .modal-overlay.hidden {
@@ -511,22 +514,20 @@ body {
   pointer-events: none !important;
 }
 
+/* Modal Inner Container - Clean Drop Animation without Trapping Scroll */
 .modal-overlay > div {
   margin: 0 auto !important;
   margin-top: 4px !important;
-  width: 95% !important;
-  max-width: 440px !important;
-  max-height: calc(100vh - 28px) !important;
+  margin-bottom: 24px !important;
+  width: 100% !important;
   border-radius: 1.5rem !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  animation: modalTopDrop 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45) !important;
+  animation: modalTopDrop 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
 }
 
 @keyframes modalTopDrop {
   from {
-    transform: translateY(-20px) scale(0.97);
+    transform: translateY(-16px) scale(0.98);
     opacity: 0;
   }
   to {
@@ -535,33 +536,55 @@ body {
   }
 }
 
-/* Modals already have fixed inset-0 and internal overflow-y: auto.
-   Do NOT set height: 100vh on body as it freezes mobile vertical touch scrolling! */
-body.modal-open {
-  touch-action: pan-y;
+/* Ensure all scrollable panels and modals have smooth momentum touch scrolling */
+.modal-overlay .overflow-y-auto,
+.overflow-y-auto {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
 }
 
+/* Ensure all horizontal sliders and lists scroll freely */
+.overflow-x-auto {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x !important;
+}
+
+/* Prevent pull-to-refresh / overscroll chaining while modal is actively open */
+body.modal-open {
+  overscroll-behavior: contain !important;
+}
+
+/* ===================================================
+   NATURAL HARDWARE-ACCELERATED ROOT VIEWPORT SCROLLING
+   (Works 100% on Android WebView, APK, iOS, Chrome)
+=================================================== */
 html {
   width: 100% !important;
   max-width: 100vw !important;
   overflow-x: hidden !important;
-  overflow-y: scroll !important; /* Forces native vertical scroll container */
-  -webkit-overflow-scrolling: touch !important;
-  scroll-behavior: smooth !important;
   height: auto !important;
   min-height: 100% !important;
+  -webkit-text-size-adjust: 100%;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   width: 100% !important;
   max-width: 100vw !important;
   overflow-x: hidden !important;
-  overflow-y: visible !important;
-  -webkit-overflow-scrolling: touch !important;
   height: auto !important;
   min-height: 100% !important;
   position: relative !important;
-  touch-action: pan-y !important; /* CRITICAL: Enables native vertical touch swipe scrolling on all mobile screens */
+  -webkit-overflow-scrolling: touch !important;
 }
 
 /* Mobile & App Mode Viewport Adjustments */
