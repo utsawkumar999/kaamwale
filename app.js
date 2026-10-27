@@ -3670,8 +3670,11 @@ function playAdminNewOrderAlertSound() {
 
 /**
  * Displays floating notification banner on screen for Admin and plays sound
+ * STRICT SECURITY: Only Founder Admin can receive admin order popups
  */
 function handleIncomingAdminOrderNotification(orderData) {
+  if (!currentUser || currentUser.role !== "admin") return;
+
   playAdminNewOrderAlertSound();
 
   const banner = document.getElementById("adminNewOrderFloatingBanner");
@@ -5733,6 +5736,16 @@ async function syncWorkersFromServer() {
 function openAdminPanelModal() {
   const modal = document.getElementById("adminPanelModal");
   if (!modal) return;
+
+  // STRICT SECURITY GUARD: Only Founder Super Admin (Shivam Pandat) with verified credentials can enter
+  const isAdmin = currentUser && currentUser.role === "admin";
+  const hasAdminToken = !!localStorage.getItem("kw_admin_token");
+  if (!isAdmin || !hasAdminToken) {
+    modal.classList.add("hidden");
+    openAdminAuthModal();
+    showToast("🔒 एडमिन पैनल केवल संस्थापक (Shivam Pandat) के लिए सुरक्षित है। कृपया पहले लॉगिन करें।", "error");
+    return;
+  }
 
   try { syncWorkersFromServer(); } catch(e) {}
 
