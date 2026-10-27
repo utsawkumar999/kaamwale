@@ -5884,13 +5884,48 @@ window.triggerPwaInstall = triggerPwaInstall;
 // MOBILE APP DOCK & LAYER-BY-LAYER SEARCH
 // ==========================================
 function initMobileAppMode() {
-  const isApk = navigator.userAgent.includes('KaamWaleApp');
+  const isApk = navigator.userAgent.includes('KaamWaleApp') || window.isKaamWaleApp === true;
   const isPwa = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
-  if (isApk || isPwa) {
+  const isMobileScreen = window.innerWidth <= 768;
+  if (isApk || isPwa || isMobileScreen) {
+    document.documentElement.classList.add('is-app-mode');
     document.body.classList.add('is-app-mode');
   }
 }
 initMobileAppMode();
+window.addEventListener('resize', initMobileAppMode);
+
+// Universal Modal Handler: Ensure all modals appear at the very top (upper screen) with zero scrolling
+function setupUniversalModalHandler() {
+  const modals = document.querySelectorAll('.modal-overlay');
+  modals.forEach(modal => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          if (!modal.classList.contains('hidden')) {
+            modal.scrollTop = 0;
+            if (modal.firstElementChild) {
+              modal.firstElementChild.scrollTop = 0;
+            }
+            document.body.classList.add('modal-open');
+          } else {
+            const openModals = document.querySelectorAll('.modal-overlay:not(.hidden)');
+            if (openModals.length === 0) {
+              document.body.classList.remove('modal-open');
+            }
+          }
+        }
+      });
+    });
+    observer.observe(modal, { attributes: true });
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupUniversalModalHandler);
+} else {
+  setupUniversalModalHandler();
+}
 
 function activateMobileDockTab(el) {
   const btns = document.querySelectorAll('.mobile-dock-btn');

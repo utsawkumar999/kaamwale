@@ -47,16 +47,39 @@ public class MainActivity extends Activity {
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
         settings.setLoadsImagesAutomatically(true);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
+
+        // Mobile Viewport: Force mobile device width (DO NOT use desktop wide viewport)
+        settings.setUseWideViewPort(false);
+        settings.setLoadWithOverviewMode(false);
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
 
-        // Append custom app identifier to User-Agent
-        String defaultUA = settings.getUserAgentString();
-        settings.setUserAgentString(defaultUA + " KaamWaleApp/1.0.0");
+        // Force Android Mobile User-Agent + KaamWaleApp identifier
+        settings.setUserAgentString("Mozilla/5.0 (Linux; Android 14; Mobile; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36 KaamWaleApp/1.0.0");
+
+        // Enable Hardware Acceleration
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
 
         webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+                // Inject mobile app mode classes
+                view.evaluateJavascript(
+                    "try {" +
+                    "  document.documentElement.classList.add('is-app-mode');" +
+                    "  document.body.classList.add('is-app-mode');" +
+                    "  window.isKaamWaleApp = true;" +
+                    "} catch(e){}",
+                    null
+                );
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return handleUrl(view, url);

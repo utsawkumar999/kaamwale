@@ -480,55 +480,103 @@ body {
   transform: scale(1.08);
 }
 
-/* Mobile Bottom Sheet Modals */
-@media (max-width: 768px) {
-  body {
-    padding-bottom: calc(72px + var(--safe-bottom)) !important;
-  }
+/* ===================================================
+   MODALS: ALWAYS OPEN AT UPPER SCREEN (TOP) - NO SCROLLING NEEDED
+=================================================== */
+.modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: flex-start !important; /* UPPER SCREEN ALIGNMENT */
+  justify-content: center !important;
+  padding: 12px 10px !important;
+  padding-top: max(16px, env(safe-area-inset-top, 16px)) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  background: rgba(7, 18, 40, 0.82) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
 
-  .modal-overlay {
-    align-items: flex-end !important;
-    padding: 0 !important;
-  }
+.modal-overlay.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
 
-  .modal-overlay > div {
-    max-width: 100% !important;
-    width: 100% !important;
-    max-height: 88vh !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    border-top-left-radius: 1.75rem !important;
-    border-top-right-radius: 1.75rem !important;
-    animation: slideUpSheet 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
+.modal-overlay > div {
+  margin: 0 auto !important;
+  margin-top: 4px !important;
+  width: 95% !important;
+  max-width: 440px !important;
+  max-height: calc(100vh - 28px) !important;
+  border-radius: 1.5rem !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  animation: modalTopDrop 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45) !important;
+}
 
-  @keyframes slideUpSheet {
-    from {
-      transform: translateY(100%);
-      opacity: 0.7;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+@keyframes modalTopDrop {
+  from {
+    transform: translateY(-20px) scale(0.97);
+    opacity: 0;
   }
-
-  /* Sheet handle bar */
-  .sheet-handle {
-    width: 40px;
-    height: 4px;
-    background: #cbd5e1;
-    border-radius: 9999px;
-    margin: 8px auto 4px auto;
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
 }
 
-/* Native App UA Mode (.is-app-mode) */
+body.modal-open {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+/* Mobile & App Mode Viewport Adjustments */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(74px + var(--safe-bottom)) !important;
+  }
+}
+
+/* ===================================================
+   NATIVE APK & MOBILE APP MODE ENFORCEMENT
+=================================================== */
 body.is-app-mode #topNoticeBar {
   display: none !important;
+}
+
+body.is-app-mode #navDownloadAppBtn {
+  display: none !important;
+}
+
+body.is-app-mode .desktop-only-header-nav,
+body.is-app-mode nav.hidden.lg\:flex {
+  display: none !important;
+}
+
+body.is-app-mode .hidden.md\:block {
+  display: none !important;
+}
+
+body.is-app-mode .block.md\:hidden {
+  display: block !important;
+}
+
+body.is-app-mode #mobileAppBottomNav {
+  display: flex !important;
 }
 
 body.is-app-mode .startup-nav {
   top: 0;
   padding-top: max(4px, var(--safe-top));
 }
+
