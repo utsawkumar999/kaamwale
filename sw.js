@@ -1,5 +1,5 @@
 // KaamWale Service Worker
-const CACHE_NAME = 'kaamwale-cache-v2-2';
+const CACHE_NAME = 'kaamwale-cache-v2-3';
 const PRECACHE_URLS = [
   '/',
   '/manifest.json',

@@ -7,7 +7,11 @@
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
     <ProgressBar
         android:id="@+id/progressBar"

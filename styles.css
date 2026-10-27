@@ -452,15 +452,15 @@ body {
   justify-content: center;
   padding: 12px 8px;
   text-align: center;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.15s ease, background-color 0.15s ease;
   position: relative;
-  overflow: hidden;
   cursor: pointer;
+  touch-action: pan-y !important;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .app-tile-box:active {
-  transform: scale(0.94);
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+  opacity: 0.85;
 }
 
 .app-tile-icon {
@@ -545,11 +545,24 @@ body {
   touch-action: pan-y !important;
 }
 
+/* Ensure all interactive buttons, cards, and tiles yield to vertical swipe gestures */
+button,
+a,
+[onclick],
+.cursor-pointer,
+.app-tile-box,
+.premium-card,
+.card-hover {
+  touch-action: pan-y !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Ensure all horizontal sliders and lists scroll freely */
-.overflow-x-auto {
+.overflow-x-auto,
+.overflow-x-auto * {
   overflow-x: auto !important;
   -webkit-overflow-scrolling: touch !important;
-  touch-action: pan-x !important;
+  touch-action: pan-x pan-y !important;
 }
 
 /* Prevent pull-to-refresh / overscroll chaining while modal is actively open */
