@@ -730,7 +730,7 @@ async function handleAdminLoginSubmit(e) {
 
   if (!pin) {
     if (errEl) {
-      errEl.textContent = "कृपया Founder Security PIN (8190) या Gmail 2FA कोड दर्ज करें।";
+      errEl.textContent = "कृपया Founder Security PIN या Gmail 2FA कोड दर्ज करें।";
       errEl.classList.remove("hidden", "text-emerald-700", "text-blue-600");
       errEl.classList.add("text-rose-600");
     }
@@ -818,7 +818,7 @@ async function handleAdminLoginSubmit(e) {
     }
 
     if (errEl) {
-      errEl.textContent = "❌ सर्वर या 2FA सत्यापन त्रुटि (" + err.message + ")। कृपया सही Master PIN (8190) जांचें।";
+      errEl.textContent = "❌ सर्वर या 2FA सत्यापन त्रुटि (" + err.message + ")। कृपया सही Security PIN जांचें।";
       errEl.classList.remove("hidden", "text-emerald-700", "text-blue-600");
       errEl.classList.add("text-rose-600");
     }
@@ -852,14 +852,14 @@ async function sendAdmin2FAOtpToGmail() {
       showToast("Shivam Pandat के Gmail पर 2FA कोड भेजा गया!", "success");
     } else {
       if (errEl) {
-        errEl.textContent = "❌ " + (data.error || "OTP भेजने में विफल। आप Master PIN 8190 का उपयोग कर सकते हैं।");
+        errEl.textContent = "❌ " + (data.error || "OTP भेजने में विफल। आप अपने गुप्त Founder PIN का उपयोग कर सकते हैं।");
         errEl.classList.add("text-rose-600");
         errEl.classList.remove("text-blue-600", "text-emerald-700");
       }
     }
   } catch (err) {
     if (errEl) {
-      errEl.textContent = "❌ नेटवर्क समस्या। आप Master PIN 8190 का उपयोग कर सकते हैं।";
+      errEl.textContent = "❌ नेटवर्क समस्या। आप अपने गुप्त Founder PIN का उपयोग कर सकते हैं।";
       errEl.classList.add("text-rose-600");
       errEl.classList.remove("text-blue-600", "text-emerald-700");
     }

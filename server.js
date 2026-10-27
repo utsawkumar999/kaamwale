@@ -1428,7 +1428,7 @@ const server = http.createServer((req, res) => {
           res.writeHead(400, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 
             success: false, 
-            error: 'कृपया Founder Security PIN (8190) या Gmail 2FA कोड दर्ज करें।' 
+            error: 'कृपया Founder Security PIN या Gmail 2FA कोड दर्ज करें।' 
           }));
           return;
         }
