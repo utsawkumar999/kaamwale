@@ -829,7 +829,7 @@ async function sendAdmin2FAOtpToGmail() {
   const errEl = document.getElementById("adminLoginError");
   try {
     if (errEl) {
-      errEl.textContent = "⏳ Shivam Pandat (shivampandat819@gmail.com) पर 2FA कोड भेजा जा रहा है...";
+      errEl.innerHTML = `<span>⏳ Shivam Pandat (shivampandat819@gmail.com) पर 2FA कोड भेजा जा रहा है...</span>`;
       errEl.classList.remove("hidden", "text-rose-600", "text-emerald-700");
       errEl.classList.add("text-blue-600");
     }
@@ -845,23 +845,30 @@ async function sendAdmin2FAOtpToGmail() {
     const data = await res.json();
     if (data.success) {
       if (errEl) {
-        errEl.textContent = "✅ Shivam Pandat के Gmail (shivampandat819@gmail.com) पर 6-अंकीय 2FA कोड भेज दिया गया है! कृपया इनपुट में दर्ज करें।";
-        errEl.classList.remove("text-rose-600", "text-blue-600");
-        errEl.classList.add("text-emerald-700");
+        errEl.innerHTML = `
+          <div class="space-y-1.5 text-left p-1">
+            <p class="font-bold text-emerald-800 text-xs">✅ Shivam Pandat (shivampandat819@gmail.com) पर 2FA कोड भेज दिया गया है!</p>
+            <p class="text-[11px] text-slate-700">📩 <a href="https://mail.google.com/mail/u/0/#search/KaamWale" target="_blank" class="text-blue-700 underline font-bold">यहाँ क्लिक करके Gmail इनबॉक्स व Spam फ़ोल्डर खोलें</a></p>
+            <p class="text-[10px] text-amber-800 bg-amber-50 p-1.5 rounded-lg border border-amber-200">
+              💡 <strong>नोट:</strong> अगर मुख्य इनबॉक्स में ईमेल न दिखे, तो Gmail का <strong>Spam / Junk फ़ोल्डर</strong> जरूर चेक करें। आप सीधे अपने <strong>Founder Master PIN</strong> से भी बिना OTP के लॉगिन कर सकते हैं।
+            </p>
+          </div>
+        `;
+        errEl.classList.remove("text-rose-600", "text-blue-600", "hidden");
       }
-      showToast("Shivam Pandat के Gmail पर 2FA कोड भेजा गया!", "success");
+      showToast("Gmail पर 2FA कोड भेज दिया गया! (Spam फ़ोल्डर भी चेक करें)", "success");
     } else {
       if (errEl) {
-        errEl.textContent = "❌ " + (data.error || "OTP भेजने में विफल। आप अपने गुप्त Founder PIN का उपयोग कर सकते हैं।");
+        errEl.innerHTML = `❌ ${data.error || "OTP भेजने में समस्या। आप सीधे अपने Founder Master PIN से लॉगिन कर सकते हैं।"}`;
         errEl.classList.add("text-rose-600");
-        errEl.classList.remove("text-blue-600", "text-emerald-700");
+        errEl.classList.remove("text-blue-600", "text-emerald-700", "hidden");
       }
     }
   } catch (err) {
     if (errEl) {
-      errEl.textContent = "❌ नेटवर्क समस्या। आप अपने गुप्त Founder PIN का उपयोग कर सकते हैं।";
+      errEl.innerHTML = `❌ नेटवर्क समस्या। आप सीधे अपने Founder Master PIN से लॉगिन कर सकते हैं।`;
       errEl.classList.add("text-rose-600");
-      errEl.classList.remove("text-blue-600", "text-emerald-700");
+      errEl.classList.remove("text-blue-600", "text-emerald-700", "hidden");
     }
   }
 }
