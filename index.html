@@ -541,6 +541,74 @@
         </div>
       </div>
 
+      <!-- LAYER 1.5: QUICK PORTALS PANEL (APP APK, TRACK ORDER, CUSTOMER, REGISTER, WORKER, ADMIN) -->
+      <!-- Placed directly under the Location Panel as requested for mobile app mode -->
+      <div id="mobileQuickPortalsPanel" class="bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-white/20 text-slate-800">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider flex items-center gap-1">
+            <i class="fa-solid fa-shapes text-blue-600"></i> QUICK PORTALS & ACCESS
+          </span>
+          <span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 24x7 Active
+          </span>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <!-- 1. App APK -->
+          <button type="button" onclick="openAppDownloadModal()" class="flex flex-col items-center justify-center p-2 rounded-xl bg-gradient-to-b from-emerald-50 to-emerald-100/80 border border-emerald-200/80 text-emerald-950 font-black text-[11px] shadow-2xs hover:scale-102 active:scale-95 transition group">
+            <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-sm shadow-xs mb-1 group-hover:bg-emerald-700 transition">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+            <span class="leading-tight">App APK</span>
+            <span class="text-[8px] text-emerald-700 font-extrabold">Download</span>
+          </button>
+
+          <!-- 2. Track Order -->
+          <button type="button" onclick="openMyBookingsModal()" class="flex flex-col items-center justify-center p-2 rounded-xl bg-gradient-to-b from-blue-50 to-sky-100/80 border border-blue-200/80 text-blue-950 font-black text-[11px] shadow-2xs hover:scale-102 active:scale-95 transition group">
+            <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-sm shadow-xs mb-1 group-hover:bg-blue-700 transition">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <span class="leading-tight">Track Order</span>
+            <span class="text-[8px] text-blue-700 font-extrabold">Live Status</span>
+          </button>
+
+          <!-- 3. Customer -->
+          <button type="button" onclick="openCustomerAuthModal('login')" class="flex flex-col items-center justify-center p-2 rounded-xl bg-gradient-to-b from-indigo-50 to-indigo-100/80 border border-indigo-200/80 text-indigo-950 font-black text-[11px] shadow-2xs hover:scale-102 active:scale-95 transition group">
+            <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xs mb-1 group-hover:bg-indigo-700 transition">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <span class="leading-tight">Customer</span>
+            <span class="text-[8px] text-indigo-700 font-extrabold">Login</span>
+          </button>
+
+          <!-- 4. Register -->
+          <button type="button" onclick="openCustomerAuthModal('register')" class="flex flex-col items-center justify-center p-2 rounded-xl bg-gradient-to-b from-amber-50 to-amber-100/80 border border-amber-200/80 text-amber-950 font-black text-[11px] shadow-2xs hover:scale-102 active:scale-95 transition group">
+            <div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center text-sm shadow-xs mb-1 group-hover:bg-amber-600 transition">
+              <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <span class="leading-tight">Register</span>
+            <span class="text-[8px] text-amber-800 font-extrabold">New User</span>
+          </button>
+
+          <!-- 5. Worker -->
+          <button type="button" onclick="openWorkerLoginModal()" class="flex flex-col items-center justify-center p-2 rounded-xl bg-gradient-to-b from-teal-50 to-teal-100/80 border border-teal-200/80 text-teal-950 font-black text-[11px] shadow-2xs hover:scale-102 active:scale-95 transition group">
+            <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm shadow-xs mb-1 group-hover:bg-teal-700 transition">
+              <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <span class="leading-tight">Worker</span>
+            <span class="text-[8px] text-teal-800 font-extrabold">Portal</span>
+          </button>
+
+          <!-- 6. Admin -->
+          <button type="button" onclick="openAdminLoginModal()" class="flex flex-col items-center justify-center p-2 rounded-xl bg-gradient-to-b from-rose-50 to-red-100/80 border border-red-200/80 text-rose-950 font-black text-[11px] shadow-2xs hover:scale-102 active:scale-95 transition group">
+            <div class="w-8 h-8 rounded-lg bg-red-600 text-white flex items-center justify-center text-sm shadow-xs mb-1 group-hover:bg-red-700 transition">
+              <i class="fa-solid fa-crown text-amber-300"></i>
+            </div>
+            <span class="leading-tight">Admin</span>
+            <span class="text-[8px] text-red-700 font-extrabold">Control</span>
+          </button>
+        </div>
+      </div>
+
       <!-- LAYER 2: 15-MIN EMERGENCY BREAKDOWN BOX (HIGH IMPACT RED) -->
       <div onclick="triggerEmergencyBooking()" 
            class="p-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white shadow-xl shadow-red-950/30 flex items-center justify-between cursor-pointer active:scale-98 transition border border-red-400/40">
@@ -727,9 +795,10 @@
   </section>
 
   <!-- ==============================================
-       4. POPULAR SERVICES SECTION (AS REQUESTED)
+       4. POPULAR SERVICES SECTION (DESKTOP VIEW)
+       On mobile, Layer 3 & Layer 4 in the app container provide these compactly.
   ============================================== -->
-  <section id="popular-services" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+  <section id="popular-services" class="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
       <div>
         <span class="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-xs font-black uppercase px-3 py-1 rounded-md mb-2">
@@ -937,9 +1006,10 @@
   </section>
 
   <!-- ==============================================
-       EMERGENCY 15-MIN DISPATCH BANNER (RED & BLUE HEROIC STRIP)
+       EMERGENCY 15-MIN DISPATCH BANNER (DESKTOP VIEW)
+       On mobile, Layer 2 in the app container provides instant 1-tap emergency booking.
   ============================================== -->
-  <section id="emergency" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <section id="emergency" class="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-600 via-blue-900 to-slate-950 p-8 sm:p-10 text-white shadow-2xl border border-red-500/30">
       <!-- Glow flares -->
       <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -2934,6 +3004,116 @@
     </div>
   </div>
 
+  <!-- ==============================================
+       ADMIN REAL-TIME NEW ORDER NOTIFICATION BANNER
+  ============================================== -->
+  <div id="adminNewOrderFloatingBanner" class="fixed top-4 right-4 z-50 max-w-sm hidden transition-all transform duration-300">
+    <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-red-950 text-white p-4 rounded-2xl shadow-2xl border-2 border-amber-400 flex items-start gap-3">
+      <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center text-lg shrink-0 shadow animate-bounce">
+        <i class="fa-solid fa-bell"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-black uppercase text-amber-300 tracking-wider">🔔 NEW CUSTOMER ORDER</span>
+          <button type="button" onclick="dismissAdminOrderBanner()" class="text-slate-400 hover:text-white p-0.5">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+        <h4 id="adminBannerOrderId" class="font-black text-sm text-white mt-0.5 truncate">KW-000000</h4>
+        <p id="adminBannerDetails" class="text-xs text-slate-300 truncate mt-0.5">Electrician • ₹349+</p>
+        <div class="mt-2.5 flex items-center gap-2">
+          <button type="button" onclick="dismissAdminOrderBanner(); openAdminPanelModal();" 
+                  class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 shadow-sm transition">
+            <span>एडमिन पैनल खोलें</span> ➔
+          </button>
+          <button type="button" onclick="dismissAdminOrderBanner()" 
+                  class="bg-white/10 hover:bg-white/20 text-white font-bold px-2.5 py-1.5 rounded-xl text-xs transition">
+            बाद में
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL: WORKER INCOMING JOB 30-SECOND RINGING ALERT
+       Rings continuously for 30 seconds when Admin assigns a job
+  ============================================== -->
+  <div id="workerIncomingDutyModal" class="modal-overlay fixed inset-0 bg-navy-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border-4 border-emerald-500 overflow-hidden transform transition-all">
+      <!-- Animated Header -->
+      <div class="p-6 bg-gradient-to-r from-navy-950 via-slate-900 to-emerald-950 text-white text-center relative">
+        <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-3xl text-emerald-400 mb-3 animate-pulse">
+          <i class="fa-solid fa-phone-volume"></i>
+        </div>
+        <span class="inline-block bg-red-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full mb-1 tracking-wider shadow">
+          🚨 नई ड्यूटी असाइन हुई (NEW JOB ALERT)
+        </span>
+        <h3 class="text-xl font-black text-white">ग्राहक का कार्य प्राप्त हुआ</h3>
+        <p class="text-xs text-slate-300 mt-0.5">एडमिन (शिवम पंडित) द्वारा आपको नियुक्त किया गया है</p>
+
+        <!-- 30-sec Countdown Indicator -->
+        <div class="mt-3.5 bg-white/10 rounded-2xl p-2.5 border border-white/20">
+          <div class="flex items-center justify-between text-xs font-bold text-amber-300 mb-1.5">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              <span>🔊 इनकमिंग रिंगटोन बज रही है...</span>
+            </span>
+            <span id="workerDutyCountdownText" class="font-black text-sm text-amber-300">30s</span>
+          </div>
+          <div class="w-full bg-white/20 rounded-full h-2.5 overflow-hidden">
+            <div id="workerDutyCountdownBar" class="bg-gradient-to-r from-amber-400 to-emerald-400 h-full w-full transition-all duration-1000"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Details Card -->
+      <div class="p-5 space-y-3.5 text-xs text-slate-700">
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-500 font-bold uppercase text-[10px]">Order ID</span>
+            <span id="workerIncomingJobId" class="font-black text-slate-900 bg-slate-200 px-2 py-0.5 rounded font-mono">KW-000000</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-500 font-bold uppercase text-[10px]">Category / सेवा</span>
+            <span id="workerIncomingCategory" class="font-black text-blue-700 text-sm">Electrician</span>
+          </div>
+          <div>
+            <span class="text-slate-500 font-bold uppercase text-[10px] block">Customer Name</span>
+            <span id="workerIncomingCustName" class="font-bold text-slate-900 text-sm">Rahul Sharma</span>
+          </div>
+          <div>
+            <span class="text-slate-500 font-bold uppercase text-[10px] block">Doorstep Address / पता</span>
+            <p id="workerIncomingAddress" class="font-bold text-slate-800 text-[11px] leading-tight mt-0.5 bg-white p-2.5 rounded-xl border border-slate-200">
+              📍 Sector 62, Noida
+            </p>
+          </div>
+        </div>
+
+        <!-- Security Instruction -->
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2 text-amber-900 text-[11px]">
+          <i class="fa-solid fa-shield-halved text-amber-600 mt-0.5 text-xs shrink-0"></i>
+          <span><strong>सख्ती से ध्यान दें:</strong> ग्राहक के घर पहुंचकर ही ग्राहक से 4-अंकीय OTP पूछकर कार्य शुरू करें।</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-2 pt-1">
+          <button type="button" onclick="acceptWorkerIncomingJob()" 
+                  class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm shadow-xl shadow-emerald-950/30 flex items-center justify-center gap-2 transform active:scale-98 transition">
+            <i class="fa-solid fa-circle-check text-base"></i>
+            <span>स्वीकार करें और रिंगटोन बंद करें (ACCEPT JOB)</span>
+          </button>
+          
+          <button type="button" onclick="stopWorkerIncomingRingtoneOnly()" 
+                  class="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-volume-xmark"></i>
+            <span>केवल रिंगटोन बंद करें (Mute Audio)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL 5: WORKER GIG BUSINESS DASHBOARD -->
   <div id="workerDashboardModal" class="modal-overlay fixed inset-0 bg-navy-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col">
@@ -2977,6 +3157,10 @@
         </div>
 
         <div class="flex items-center gap-2">
+          <button type="button" onclick="testWorker30SecDutyAlert()" 
+                  class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm" title="30 सेकंड रिंगटोन टेस्ट करें">
+            <i class="fa-solid fa-bell text-xs"></i> <span>30s रिंगटोन टेस्ट</span>
+          </button>
           <button type="button" onclick="handleWorkerLogout()" 
                   class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/40 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5" title="कामगार पोर्टल से लॉगआउट करें">
             <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
@@ -3016,7 +3200,7 @@
   <!-- MODAL 6: ADMIN DASHBOARD (SHIVAM PANDAT) -->
   <div id="adminPanelModal" class="modal-overlay fixed inset-0 bg-navy-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col">
-      <div class="p-6 bg-navy-950 text-white flex items-center justify-between shrink-0">
+      <div class="p-5 sm:p-6 bg-navy-950 text-white flex flex-wrap items-center justify-between gap-3 shrink-0">
         <div>
           <span class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider">SUPER ADMIN & PLATFORM OWNER</span>
           <h3 class="text-xl font-black flex items-center gap-2">
@@ -3024,9 +3208,19 @@
           </h3>
           <p class="text-xs text-slate-300 mt-0.5">Founder: Shivam Pandat • KYC approvals & platform monitoring</p>
         </div>
-        <button onclick="closeAdminPanelModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="playAdminNewOrderAlertSound()" 
+                  class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-2.5 py-1.5 rounded-xl text-[11px] flex items-center gap-1 shadow-sm transition" title="नया ग्राहक ऑर्डर साउंड टेस्ट करें">
+            <i class="fa-solid fa-volume-high text-xs"></i> <span>ऑर्डर साउंड टेस्ट</span>
+          </button>
+          <button type="button" onclick="testWorker30SecDutyAlert()" 
+                  class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-2.5 py-1.5 rounded-xl text-[11px] flex items-center gap-1 shadow-sm transition" title="कामगार 30-सेकंड रिंगटोन टेस्ट करें">
+            <i class="fa-solid fa-bell text-xs text-amber-300"></i> <span>वर्कर 30s रिंगटोन</span>
+          </button>
+          <button onclick="closeAdminPanelModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Stats Grid -->

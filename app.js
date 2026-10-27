@@ -3179,9 +3179,9 @@ function openBookingModal(categoryName) {
 
   if (subservicesList) {
     subservicesList.innerHTML = subs.map((s, idx) => `
-      <label class="flex items-start gap-2 cursor-pointer text-slate-700">
-        <input type="checkbox" name="bookingSubserviceCheck" value="${s}" ${idx === 0 ? 'checked' : ''} class="w-4 h-4 text-blue-600 rounded border-slate-300 mt-0.5" />
-        <span>${s}</span>
+      <label class="flex items-start gap-2 cursor-pointer text-slate-700 hover:text-blue-700 transition">
+        <input type="checkbox" name="bookingSubserviceCheck" value="${s}" ${idx === 0 ? 'checked' : ''} onchange="updateBookingModalPriceEstimate()" class="w-4 h-4 text-blue-600 rounded border-slate-300 mt-0.5" />
+        <span class="text-xs font-semibold">${s}</span>
       </label>
     `).join("");
   }
@@ -3193,6 +3193,28 @@ function openBookingModal(categoryName) {
   if (estTotal) estTotal.textContent = `₹${99 + baseRate}+`;
 
   if (modal) modal.classList.remove("hidden");
+}
+
+function updateBookingModalPriceEstimate() {
+  const catTitle = document.getElementById("modalSelectedCategory");
+  const categoryName = catTitle ? catTitle.textContent : "Electrician";
+  const found = CATEGORIES.find(c => c.name.toLowerCase() === categoryName.toLowerCase());
+  const baseRate = found ? (parseInt((found.rate.match(/\d+/) || [250])[0], 10)) : 250;
+  
+  const checkedBoxes = document.querySelectorAll("input[name='bookingSubserviceCheck']:checked");
+  const count = Math.max(1, checkedBoxes.length);
+  
+  const estVisit = document.getElementById("modalEstVisit");
+  const estLabour = document.getElementById("modalEstLabour");
+  const estTotal = document.getElementById("modalEstTotal");
+  
+  const visitCharge = 99;
+  const labourCharge = baseRate + (count - 1) * 99;
+  const total = visitCharge + labourCharge;
+  
+  if (estVisit) estVisit.textContent = `₹${visitCharge}`;
+  if (estLabour) estLabour.textContent = `₹${labourCharge}`;
+  if (estTotal) estTotal.textContent = `₹${total}+`;
 }
 
 function closeBookingModal() {
@@ -3362,8 +3384,21 @@ function finalizeCustomerBooking(bookingData) {
     successModal.classList.remove("hidden");
   }
 
-  // Play Audio Sound
-  try { playOrderSuccessChime(); } catch(e) {}
+  // Play Audio Sound & Broadcast to Admin
+  try {
+    playOrderSuccessChime();
+    playAdminNewOrderAlertSound();
+    handleIncomingAdminOrderNotification(bookingData);
+    localStorage.setItem("kw_admin_new_order_alert", JSON.stringify({
+      booking_id: bookingData.booking_id,
+      category: bookingData.category,
+      custName: bookingData.custName,
+      custPhone: bookingData.custPhone,
+      custAddress: bookingData.custAddress,
+      priceEstimate: bookingData.priceEstimate,
+      time: Date.now()
+    }));
+  } catch(e) {}
   showToast(`📲 ऑर्डर दर्ज! एडमिन (शिवम पंडित - +91 98998 62721) को WhatsApp, SMS और वेबसाइट पर तुरंत सूचना भेजी गई।`);
 
   // 2. DISPATCH TO BACKEND APIs (Saves permanently to orders.json on server)
@@ -3418,6 +3453,248 @@ function playOrderSuccessChime() {
     osc.stop(ctx.currentTime + 0.35);
   } catch (e) {}
 }
+
+// ==========================================
+// AUDIO NOTIFICATIONS & WORKER 30-SEC RINGTONE ENGINE
+// Founder: Shivam Pandat (+91 98998 62721 | KaamWale.com)
+// ==========================================
+
+let currentWorkerRingAudioContext = null;
+let currentWorkerRingInterval = null;
+let workerRingTimerInterval = null;
+let workerRingTimeRemaining = 30;
+
+/**
+ * Loud attention-grabbing chime for Admin when any customer books an order.
+ * Synthesized using Web Audio API (100% offline & WebView compatible).
+ */
+function playAdminNewOrderAlertSound() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
+    // High-priority 3-chord repeating chime sequence (G5 -> C6 -> E6 -> G6)
+    const notes = [
+      { freq: 784.00, time: 0, dur: 0.12 },     // G5
+      { freq: 1046.50, time: 0.14, dur: 0.15 }, // C6
+      { freq: 1318.51, time: 0.30, dur: 0.28 }, // E6
+      { freq: 784.00, time: 0.65, dur: 0.12 },  // G5
+      { freq: 1046.50, time: 0.79, dur: 0.15 }, // C6
+      { freq: 1567.98, time: 0.95, dur: 0.40 }  // G6
+    ];
+    notes.forEach(n => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(n.freq, ctx.currentTime + n.time);
+      gain.gain.setValueAtTime(0.35, ctx.currentTime + n.time);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + n.time + n.dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + n.time);
+      osc.stop(ctx.currentTime + n.time + n.dur);
+    });
+  } catch (e) {
+    console.warn("Admin audio alert notice:", e);
+  }
+}
+
+/**
+ * Displays floating notification banner on screen for Admin and plays sound
+ */
+function handleIncomingAdminOrderNotification(orderData) {
+  playAdminNewOrderAlertSound();
+
+  const banner = document.getElementById("adminNewOrderFloatingBanner");
+  const bId = document.getElementById("adminBannerOrderId");
+  const bDet = document.getElementById("adminBannerDetails");
+
+  if (banner && bId && bDet) {
+    bId.textContent = orderData.booking_id || "KW-NEW";
+    bDet.textContent = `${orderData.category || 'Service'} • ${orderData.custName || 'ग्राहक'} (${orderData.custPhone || ''}) • ${orderData.priceEstimate || '₹349+'}`;
+    banner.classList.remove("hidden");
+  }
+
+  // If Admin panel is open, refresh orders list immediately
+  try {
+    const adminModal = document.getElementById("adminPanelModal");
+    if (adminModal && !adminModal.classList.contains("hidden")) {
+      renderAdminOrdersList();
+    }
+  } catch(e) {}
+}
+
+function dismissAdminOrderBanner() {
+  const banner = document.getElementById("adminNewOrderFloatingBanner");
+  if (banner) banner.classList.add("hidden");
+}
+
+/**
+ * 30-Second Continuous Ringing Loop for Assigned Worker
+ */
+function startWorker30SecRingtone(jobData) {
+  stopWorkerIncomingRingtoneOnly();
+
+  workerRingTimeRemaining = 30;
+
+  // 1. Show Incoming Duty Modal
+  const modal = document.getElementById("workerIncomingDutyModal");
+  if (modal) {
+    const jId = document.getElementById("workerIncomingJobId");
+    const jCat = document.getElementById("workerIncomingCategory");
+    const jCust = document.getElementById("workerIncomingCustName");
+    const jAddr = document.getElementById("workerIncomingAddress");
+    const txt = document.getElementById("workerDutyCountdownText");
+    const bar = document.getElementById("workerDutyCountdownBar");
+
+    if (jId) jId.textContent = jobData.bookingId || jobData.booking_id || "KW-DUTY";
+    if (jCat) jCat.textContent = jobData.category || "General Service";
+    if (jCust) jCust.textContent = jobData.custName ? `${jobData.custName} (📞 ${jobData.custPhone || ''})` : "ग्राहक";
+    if (jAddr) jAddr.textContent = `📍 ${jobData.custAddress || jobData.address || "Doorstep Address"}`;
+    if (txt) txt.textContent = "30s";
+    if (bar) bar.style.width = "100%";
+
+    modal.classList.remove("hidden");
+  }
+
+  // 2. Synthesize telephone ringing warble (440Hz + 480Hz) in 1.6s burst + 0.9s pause loop
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (AudioCtx) {
+      currentWorkerRingAudioContext = new AudioCtx();
+      if (currentWorkerRingAudioContext.state === 'suspended') {
+        currentWorkerRingAudioContext.resume();
+      }
+
+      function playSingleBurst() {
+        if (!currentWorkerRingAudioContext || currentWorkerRingAudioContext.state === 'closed') return;
+        const ctx = currentWorkerRingAudioContext;
+        const now = ctx.currentTime;
+
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(440, now);
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(480, now);
+
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.setValueAtTime(0.35, now + 1.5);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 1.7);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 1.7);
+        osc2.stop(now + 1.7);
+      }
+
+      playSingleBurst();
+
+      currentWorkerRingInterval = setInterval(() => {
+        playSingleBurst();
+      }, 2500);
+    }
+  } catch (err) {
+    console.warn("Worker ringtone audio init error:", err);
+  }
+
+  // 3. 30-Second Countdown Timer
+  workerRingTimerInterval = setInterval(() => {
+    workerRingTimeRemaining--;
+    const txt = document.getElementById("workerDutyCountdownText");
+    const bar = document.getElementById("workerDutyCountdownBar");
+    if (txt) txt.textContent = `${workerRingTimeRemaining}s`;
+    if (bar) bar.style.width = `${Math.max(0, (workerRingTimeRemaining / 30) * 100)}%`;
+
+    if (workerRingTimeRemaining <= 0) {
+      clearInterval(workerRingTimerInterval);
+      workerRingTimerInterval = null;
+      stopWorkerAudioOnly();
+      if (txt) txt.textContent = "रिंगटोन पूर्ण (Saved to Tasks)";
+      showToast("⏰ कामगार ड्यूटी रिंगटोन 30 सेकंड पूर्ण होकर शांत हो गई। कार्य कामगार डैशबोर्ड में सुरक्षित है।");
+    }
+  }, 1000);
+}
+
+function stopWorkerAudioOnly() {
+  if (currentWorkerRingInterval) {
+    clearInterval(currentWorkerRingInterval);
+    currentWorkerRingInterval = null;
+  }
+  if (currentWorkerRingAudioContext) {
+    try {
+      currentWorkerRingAudioContext.close();
+    } catch (e) {}
+    currentWorkerRingAudioContext = null;
+  }
+}
+
+function stopWorkerIncomingRingtoneOnly() {
+  stopWorkerAudioOnly();
+  if (workerRingTimerInterval) {
+    clearInterval(workerRingTimerInterval);
+    workerRingTimerInterval = null;
+  }
+  const modal = document.getElementById("workerIncomingDutyModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+function acceptWorkerIncomingJob() {
+  stopWorkerIncomingRingtoneOnly();
+  showToast("✅ ड्यूटी स्वीकार कर ली गई! कामगार डैशबोर्ड खोला जा रहा है...");
+  openWorkerDashboardModal();
+}
+
+function triggerWorker30SecDutyAlert(dutyData) {
+  startWorker30SecRingtone(dutyData || {
+    bookingId: "KW-TEST",
+    category: "Electrician",
+    custName: "रोहित शर्मा",
+    custPhone: "9876543210",
+    custAddress: "सेक्टर 62, नोएडा, उत्तर प्रदेश"
+  });
+}
+
+function testWorker30SecDutyAlert(bookingId) {
+  let duty = null;
+  if (bookingId) {
+    const bookings = getStoredBookings();
+    duty = bookings.find(b => b.booking_id === bookingId);
+  }
+  triggerWorker30SecDutyAlert(duty || {
+    bookingId: bookingId || "KW-DEMO-" + Math.floor(1000 + Math.random() * 9000),
+    category: "इलेक्ट्रीशियन (Electrician)",
+    custName: "आलोक वर्मा",
+    custPhone: "9899862721",
+    custAddress: "फ्लैट 402, आम्रपाली वैली, नोएडा सेक्टर 120"
+  });
+  showToast("🔔 30-सेकंड कामगार रिंगटोन परीक्षण शुरू हुआ!");
+}
+
+// Global Cross-Tab Storage Listener
+window.addEventListener("storage", function(e) {
+  if (e.key === "kw_admin_new_order_alert" && e.newValue) {
+    try {
+      const data = JSON.parse(e.newValue);
+      handleIncomingAdminOrderNotification(data);
+    } catch(err) {}
+  }
+  if (e.key === "kw_worker_assignment_alert" && e.newValue) {
+    try {
+      const data = JSON.parse(e.newValue);
+      triggerWorker30SecDutyAlert(data);
+    } catch(err) {}
+  }
+});
 
 function closeSuccessModal() {
   const modal = document.getElementById("bookingSuccessModal");
@@ -4778,7 +5055,8 @@ async function loadAdminOrdersFromServer(isManualRefresh = false) {
         serverOrders.forEach(o => { if (o.booking_id) lastKnownOrderIds.add(o.booking_id); });
 
         if (hasNew && newestOrder) {
-          playAdminNewOrderChime();
+          playAdminNewOrderAlertSound();
+          handleIncomingAdminOrderNotification(newestOrder);
           showToast(`🚨 नया ग्राहक ऑर्डर आया! ${newestOrder.booking_id} - ${newestOrder.custName} (${newestOrder.category})`);
         }
 
@@ -5215,6 +5493,10 @@ function renderAdminOrdersList(bookingsToRender) {
               </div>
 
               <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="testWorker30SecDutyAlert('${b.booking_id}')" 
+                        class="bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 font-black px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 transition shadow-2xs" title="कामगार के फोन पर 30-सेकंड इनकमिंग रिंगटोन बजाएं">
+                  <i class="fa-solid fa-bell text-amber-600"></i> 🔊 30s रिंग टेस्ट
+                </button>
                 <button type="button" onclick="sendJobToWorkerWhatsApp('${b.booking_id}')" 
                         class="btn-emerald px-3 py-1.5 text-xs font-black flex items-center gap-1.5 shadow-sm" title="Send details to worker on WhatsApp (Zero Price)">
                   <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Job
@@ -5246,9 +5528,43 @@ function renderAdminOrdersList(bookingsToRender) {
   }).join("");
 }
 
+async function syncWorkersFromServer() {
+  try {
+    const res = await fetch("/api/workers");
+    if (res.ok) {
+      const serverWorkers = await res.json();
+      if (Array.isArray(serverWorkers) && serverWorkers.length > 0) {
+        const localWorkers = getStoredWorkers();
+        const merged = new Map();
+        localWorkers.forEach(w => merged.set(w.id || w.phone, w));
+        serverWorkers.forEach(w => {
+          const key = w.id || w.phone;
+          const ex = merged.get(key) || {};
+          merged.set(key, {
+            ...ex,
+            id: w.id || `worker_${w.phone}`,
+            name: w.name || w.phone,
+            phone: w.phone,
+            email: w.email,
+            category: w.category || "Electrician",
+            location: w.location || w.address || "Local",
+            experience: w.experience || 3,
+            status: "approved"
+          });
+        });
+        const finalWorkers = Array.from(merged.values());
+        saveStoredWorkers(finalWorkers);
+        try { filterWorkers(); } catch(e) {}
+      }
+    }
+  } catch(e) {}
+}
+
 function openAdminPanelModal() {
   const modal = document.getElementById("adminPanelModal");
   if (!modal) return;
+
+  try { syncWorkersFromServer(); } catch(e) {}
 
   const workers = getStoredWorkers();
   const bookings = getStoredBookings();
@@ -5564,6 +5880,27 @@ function assignWorkerToBooking(bookingId, workerIdOverride) {
   target.assignedWorkerPhone = worker.phone;
   saveStoredBookings(bookings);
 
+  // Trigger 30-Second Ringing Notification for the Assigned Worker
+  const dutyAlertData = {
+    workerId: worker.id,
+    workerName: worker.name,
+    workerPhone: worker.phone,
+    bookingId: bookingId,
+    category: target.category,
+    subServices: target.subServices,
+    custName: target.custName,
+    custPhone: target.custPhone,
+    custAddress: target.custAddress,
+    time: Date.now()
+  };
+
+  try {
+    localStorage.setItem("kw_worker_assignment_alert", JSON.stringify(dutyAlertData));
+    triggerWorker30SecDutyAlert(dutyAlertData);
+  } catch (e) {
+    console.warn("Worker duty alert notice:", e);
+  }
+
   try {
     fetch('/api/orders/update', {
       method: 'POST',
@@ -5578,7 +5915,7 @@ function assignWorkerToBooking(bookingId, workerIdOverride) {
     }).catch(e => console.log('Server order update notice:', e));
   } catch (e) {}
 
-  showToast(`✓ ऑर्डर ${bookingId} कामगार ${worker.name} को असाइन कर दिया गया!`);
+  showToast(`✓ ऑर्डर ${bookingId} कामगार ${worker.name} को असाइन हुआ! 30-सेकंड इनकमिंग रिंगटोन बज रही है।`);
   loadAdminOrdersFromServer(false);
 }
 
