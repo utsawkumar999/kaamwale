@@ -564,7 +564,8 @@ body.modal-open {
 html {
   width: 100% !important;
   max-width: 100vw !important;
-  overflow-x: hidden !important;
+  overflow-x: clip !important;
+  overflow-y: visible !important;
   height: auto !important;
   min-height: 100% !important;
   -webkit-text-size-adjust: 100%;
@@ -580,7 +581,8 @@ html {
 body {
   width: 100% !important;
   max-width: 100vw !important;
-  overflow-x: hidden !important;
+  overflow-x: clip !important;
+  overflow-y: visible !important;
   height: auto !important;
   min-height: 100% !important;
   position: relative !important;

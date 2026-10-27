@@ -1561,6 +1561,13 @@ const server = http.createServer((req, res) => {
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
     const headers = { 'Content-Type': contentType };
 
+    // Prevent caching of HTML, CSS, JS to guarantee fresh UI & scroll fixes
+    if (ext === '.html' || ext === '.css' || ext === '.js') {
+      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      headers['Pragma'] = 'no-cache';
+      headers['Expires'] = '0';
+    }
+
     if (ext === '.apk') {
       headers['Content-Disposition'] = 'attachment; filename="KaamWale.apk"';
     }
