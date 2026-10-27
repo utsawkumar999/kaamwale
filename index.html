@@ -2726,117 +2726,207 @@
   </div>
 
   <!-- ==============================================================
-       RAPIDO & BLINKIT STYLE INTERACTIVE LIVE LOCATION MAP TRACKER
+       REAL-WORLD LIVE SERVICE GPS ORDER TRACKER (EASY TO UNDERSTAND)
   ============================================================== -->
-  <div id="liveTrackerModal" class="modal-overlay fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
-    <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col h-[90vh] sm:h-[86vh] relative">
+  <div id="liveTrackerModal" class="modal-overlay fixed inset-0 bg-navy-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[94vh] relative">
       
-      <!-- Top Tracker Header (Rapido Style) -->
-      <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-navy-900 px-5 py-3.5 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
+      <!-- Top Tracker Header -->
+      <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-navy-950 px-4 sm:px-6 py-3.5 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-lg font-black shadow-md shrink-0">
             <i class="fa-solid fa-motorcycle text-slate-950 text-base"></i>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-[11px] font-black uppercase text-emerald-400 tracking-wider flex items-center gap-1">
+              <span class="text-[10px] sm:text-[11px] font-black uppercase text-emerald-400 tracking-wider flex items-center gap-1">
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                LIVE TRACKER
+                लाइव ट्रैकर • LIVE STATUS
               </span>
               <span class="text-slate-500">•</span>
               <span id="trackerOrderIdDisplay" class="text-xs font-mono font-bold text-amber-300">KW-ORD-0000</span>
             </div>
-            <h3 id="trackerServiceTitle" class="text-sm sm:text-base font-black tracking-tight text-white truncate max-w-[220px] sm:max-w-md">
+            <h3 id="trackerServiceTitle" class="text-sm sm:text-base font-black tracking-tight text-white truncate max-w-[200px] sm:max-w-md">
               Electrician Arriving at Doorstep
             </h3>
           </div>
         </div>
 
-        <button onclick="closeLiveTrackerModal()" type="button" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition">
-          <i class="fa-solid fa-xmark text-lg"></i>
+        <button onclick="closeLiveTrackerModal()" type="button" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition" title="बंद करें">
+          <i class="fa-solid fa-xmark text-xl"></i>
         </button>
       </div>
 
-      <!-- ETA & Distance Sub-Banner -->
-      <div class="bg-amber-400 px-5 py-2.5 text-slate-950 flex items-center justify-between shrink-0 font-black text-xs sm:text-sm shadow-sm">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-bolt text-red-600"></i>
-          <span>ETA: <span id="trackerEtaText" class="underline decoration-red-600 decoration-2">12 Mins (1.6 km away)</span></span>
-        </div>
-        <div class="flex items-center gap-2 text-xs">
-          <span class="bg-slate-950 text-white px-2.5 py-1 rounded-xl text-[11px] font-mono flex items-center gap-1.5 shadow-inner">
-            <i class="fa-solid fa-shield-check text-emerald-400"></i>
-            DOORSTEP OTP: <span id="trackerOtpCode" class="text-amber-300 font-black text-xs tracking-wider">4819</span>
-          </span>
-        </div>
-      </div>
+      <!-- Scrollable Tracker Body -->
+      <div class="overflow-y-auto flex-1 flex flex-col">
 
-      <!-- Interactive Leaflet Map Container -->
-      <div class="relative flex-1 w-full bg-slate-100 min-h-[250px] overflow-hidden">
-        <div id="liveTrackingMap" class="w-full h-full z-10" style="min-height: 250px;"></div>
-        
-        <!-- Floating Recenter Buttons on Map -->
-        <div class="absolute top-3 right-3 z-20 flex flex-col gap-2">
-          <button onclick="recenterMapOnWorker()" type="button" class="w-10 h-10 rounded-2xl bg-white/95 shadow-xl border border-slate-200 text-slate-800 hover:text-blue-600 flex items-center justify-center transition" title="Center on Worker">
-            <i class="fa-solid fa-motorcycle text-base text-blue-600"></i>
-          </button>
-          <button onclick="recenterMapOnCustomer()" type="button" class="w-10 h-10 rounded-2xl bg-white/95 shadow-xl border border-slate-200 text-slate-800 hover:text-emerald-600 flex items-center justify-center transition" title="Center on My Home">
-            <i class="fa-solid fa-house-chimney text-base text-emerald-600"></i>
-          </button>
+        <!-- 4-STEP INTUITIVE PROGRESS STEPPER (EASY TO UNDERSTAND) -->
+        <div class="bg-slate-50 border-b border-slate-200 p-3 sm:p-4 shrink-0">
+          <div class="flex items-center justify-between max-w-lg mx-auto relative px-2">
+            <!-- Connecting Line -->
+            <div class="absolute top-4 left-8 right-8 h-1 bg-slate-200 -z-0">
+              <div id="trackerProgressLine" class="h-full bg-emerald-500 transition-all duration-500" style="width: 66%;"></div>
+            </div>
+
+            <!-- Step 1: Confirmed -->
+            <div class="relative z-10 flex flex-col items-center text-center">
+              <div id="trackerStep1Icon" class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <span class="text-[10px] font-black text-slate-800 mt-1">1. स्वीकृत</span>
+              <span class="text-[8px] text-slate-500 font-medium">Confirmed</span>
+            </div>
+
+            <!-- Step 2: Assigned -->
+            <div class="relative z-10 flex flex-col items-center text-center">
+              <div id="trackerStep2Icon" class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+              <span class="text-[10px] font-black text-slate-800 mt-1">2. नियुक्त</span>
+              <span class="text-[8px] text-slate-500 font-medium">Assigned</span>
+            </div>
+
+            <!-- Step 3: On the Way -->
+            <div class="relative z-10 flex flex-col items-center text-center">
+              <div id="trackerStep3Icon" class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center text-xs font-black shadow-sm ring-4 ring-amber-200 animate-pulse">
+                <i class="fa-solid fa-motorcycle"></i>
+              </div>
+              <span class="text-[10px] font-black text-amber-900 mt-1">3. रास्ते में</span>
+              <span class="text-[8px] text-amber-700 font-bold">On the Way</span>
+            </div>
+
+            <!-- Step 4: Arrived / Done -->
+            <div class="relative z-10 flex flex-col items-center text-center">
+              <div id="trackerStep4Icon" class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-black shadow-sm">
+                <i class="fa-solid fa-house-chimney"></i>
+              </div>
+              <span class="text-[10px] font-black text-slate-500 mt-1">4. डोरस्टेप</span>
+              <span class="text-[8px] text-slate-400 font-medium">Doorstep</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Live Status Pill Overlay on Map -->
-        <div class="absolute bottom-3 left-3 z-20 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-2xl shadow-xl border border-slate-200 text-xs font-black text-slate-800 flex items-center gap-2">
-          <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-          <span id="trackerMapStatusBadge">🏃 Worker moving towards your location</span>
-        </div>
-      </div>
-
-      <!-- Bottom Partner Card & Actions (Blinkit Style) -->
-      <div class="p-4 bg-white border-t border-slate-200 shrink-0 space-y-3">
-        
-        <!-- Partner Profile & Call/WhatsApp -->
-        <div class="flex items-center justify-between gap-3 flex-wrap">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center text-xl font-black shadow-md shrink-0">
-              <span id="trackerWorkerAvatar">👷</span>
+        <!-- HIGH VISIBILITY DOORSTEP OTP & ETA HERO BANNER -->
+        <div class="p-3 sm:p-4 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 text-slate-950 flex flex-wrap items-center justify-between gap-3 shadow-sm shrink-0">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-slate-950 text-amber-300 flex items-center justify-center text-lg shadow-inner shrink-0">
+              <i class="fa-solid fa-bolt-lightning text-amber-400"></i>
             </div>
             <div>
-              <div class="flex items-center gap-1.5">
-                <h4 id="trackerWorkerName" class="text-sm font-black text-slate-900">सत्यापित पार्टनर</h4>
-                <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                  <i class="fa-solid fa-shield-check"></i> VERIFIED PRO
-                </span>
-              </div>
-              <p class="text-xs text-slate-500 font-semibold flex items-center gap-2 mt-0.5">
-                <span id="trackerWorkerCategory">Electrician</span> • ⭐ <span id="trackerWorkerRating">4.9</span> (140+ jobs)
-              </p>
+              <span class="text-[10px] font-extrabold uppercase tracking-tight text-slate-900 block">अनुमानित समय • ESTIMATED ARRIVAL</span>
+              <span id="trackerEtaText" class="text-sm sm:text-base font-black text-slate-950 leading-tight">
+                ⚡ 12 मिनट (1.6 km दूर)
+              </span>
             </div>
           </div>
 
-          <!-- Contact Actions -->
-          <div class="flex items-center gap-2">
-            <a id="trackerWorkerCallLink" href="tel:9876512001" 
-               class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
-              <i class="fa-solid fa-phone"></i> Call
-            </a>
-            <a id="trackerWorkerWhatsAppLink" href="https://wa.me/919876512001" target="_blank"
-               class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
-              <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
-            </a>
+          <!-- Doorstep Security OTP Box with Copy -->
+          <div class="flex items-center gap-2 bg-slate-950 text-white px-3.5 py-2 rounded-2xl shadow-md shrink-0">
+            <div>
+              <span class="text-[9px] font-bold text-amber-300 uppercase block leading-none">DOORSTEP OTP</span>
+              <span id="trackerOtpCode" class="text-xl sm:text-2xl font-mono font-black tracking-widest text-white leading-tight">
+                4819
+              </span>
+            </div>
+            <button onclick="copyTrackerOtp()" type="button" class="ml-1 px-2 py-1 rounded-lg bg-white/20 hover:bg-white/30 text-white text-[10px] font-black transition" title="OTP कॉपी करें">
+              <i class="fa-solid fa-copy"></i>
+            </button>
           </div>
         </div>
 
-        <!-- Doorstep Security OTP Warning -->
-        <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-200 flex items-center justify-between text-xs text-amber-950 font-medium">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-shield-halved text-amber-600 text-base"></i>
-            <span>सुरक्षा कोड केवल वर्कर के आपके दरवाजे पर पहुंचने के बाद ही साझा करें।</span>
+        <!-- INTERACTIVE LIVE LEAFLET MAP -->
+        <div class="relative w-full h-[220px] sm:h-[280px] bg-slate-100 overflow-hidden shrink-0 border-b border-slate-200">
+          <div id="liveTrackingMap" class="w-full h-full z-10" style="min-height: 220px;"></div>
+          
+          <!-- Floating Controls on Map -->
+          <div class="absolute top-3 right-3 z-20 flex flex-col gap-2">
+            <button onclick="recenterMapOnWorker()" type="button" 
+                    class="px-2.5 py-1.5 rounded-xl bg-white/95 shadow-lg border border-slate-200 text-slate-800 hover:text-blue-600 text-xs font-black flex items-center gap-1.5 transition" title="कामगार की लोकेशन">
+              <i class="fa-solid fa-motorcycle text-amber-600"></i> <span>वर्कर</span>
+            </button>
+            <button onclick="recenterMapOnCustomer()" type="button" 
+                    class="px-2.5 py-1.5 rounded-xl bg-white/95 shadow-lg border border-slate-200 text-slate-800 hover:text-emerald-600 text-xs font-black flex items-center gap-1.5 transition" title="मेरे घर की लोकेशन">
+              <i class="fa-solid fa-house-chimney text-emerald-600"></i> <span>मेरा पता</span>
+            </button>
           </div>
-          <span class="font-mono font-black text-sm bg-white px-2 py-0.5 rounded border border-amber-300" id="trackerOtpCodeSmall">4819</span>
+
+          <!-- Dynamic Status Overlay Pill -->
+          <div class="absolute bottom-3 left-3 right-3 z-20 max-w-sm">
+            <div class="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl border border-slate-200 text-xs font-black text-slate-800 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0"></span>
+              <span id="trackerMapStatusBadge" class="truncate">🛵 कामगार आपकी ओर रवाना हो चुके हैं</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TECHNICIAN & ORDER DETAILS SECTION -->
+        <div class="p-4 sm:p-5 bg-white space-y-4 flex-1">
+          
+          <!-- Assigned Karigar / Worker Card -->
+          <div class="p-3.5 bg-blue-50/80 rounded-2xl border border-blue-200/80 flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-700 via-indigo-700 to-slate-900 text-white flex items-center justify-center text-xl font-black shadow-md shrink-0">
+                <span id="trackerWorkerAvatar">👷</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <h4 id="trackerWorkerName" class="text-sm font-black text-slate-900">सत्यापित पार्टनर</h4>
+                  <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-1.5 py-0.2 rounded-full flex items-center gap-0.5">
+                    <i class="fa-solid fa-shield-check"></i> VERIFIED
+                  </span>
+                </div>
+                <p class="text-xs text-slate-600 font-semibold flex items-center gap-1.5 mt-0.5">
+                  <span id="trackerWorkerCategory">Electrician</span> • ⭐ <span id="trackerWorkerRating">4.9</span> (सत्यापित प्रो)
+                </p>
+              </div>
+            </div>
+
+            <!-- Instant Contact Buttons -->
+            <div class="flex items-center gap-2">
+              <a id="trackerWorkerCallLink" href="tel:9899862721" 
+                 class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black flex items-center gap-1.5 shadow-sm transition">
+                <i class="fa-solid fa-phone text-amber-300"></i> Call
+              </a>
+              <a id="trackerWorkerWhatsAppLink" href="https://wa.me/919899862721" target="_blank"
+                 class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black flex items-center gap-1.5 shadow-sm transition">
+                <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <!-- Service Address & Amount Estimate -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+              <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">सेवा का पता (DELIVERY ADDRESS)</span>
+              <p id="trackerAddressText" class="font-bold text-slate-800 mt-1 leading-snug">📍 गौर सिटी 2, ग्रेटर नोएडा</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+              <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">बिल अनुमान व भुगतान (PAYMENT)</span>
+              <div class="flex items-center justify-between mt-1">
+                <span id="trackerPriceEstimate" class="font-black text-emerald-700 text-sm">₹249 - ₹499</span>
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-black px-2 py-0.5 rounded-lg">Cash / UPI</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1-Click Pay Online via UPI Button -->
+          <button id="trackerPayOnlineBtn" onclick="triggerTrackerUpiPayment()" type="button" 
+                  class="w-full bg-gradient-to-r from-blue-50 via-sky-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 border border-blue-300/80 py-2.5 px-4 rounded-2xl text-xs font-black flex items-center justify-center gap-2 transition shadow-xs">
+            <i class="fa-solid fa-qrcode text-blue-600 text-sm"></i>
+            <span>💳 Pay via UPI QR Code (Paytm, GPay, PhonePe)</span>
+          </button>
+
+          <!-- Safety Instructions Note -->
+          <div class="p-3 bg-amber-50 rounded-2xl border border-amber-200/80 text-[11px] text-amber-950 flex items-start gap-2.5">
+            <i class="fa-solid fa-shield-halved text-amber-600 text-sm mt-0.5 shrink-0"></i>
+            <p class="leading-tight">
+              <strong>सुरक्षा सूचना:</strong> कामगार के आपके घर पर उपस्थित होने के बाद ही ऊपर दिया गया 4-अंकीय OTP साझा करें। किसी भी सहायता के लिए संस्थापक <strong>शिवम पंडित</strong> (+91 9899862721) से सीधे संपर्क कर सकते हैं।
+            </p>
+          </div>
+
         </div>
 
       </div>

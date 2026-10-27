@@ -3682,19 +3682,28 @@ function renderTrackOrdersList() {
 
   if (filtered.length === 0) {
     list.innerHTML = `
-      <div class="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200">
-        <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mx-auto mb-3 shadow-sm">
-          <i class="fa-solid fa-clipboard-check"></i>
+      <div class="p-6 sm:p-8 text-center bg-slate-50 rounded-3xl border border-slate-200 space-y-4">
+        <div class="w-16 h-16 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto shadow-sm">
+          <i class="fa-solid fa-truck-fast text-blue-600"></i>
         </div>
-        <h4 class="text-sm font-black text-slate-800">कोई सक्रिय ऑर्डर नहीं मिला</h4>
-        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-          यदि आपने बुकिंग की है, तो ऊपर अपना 10-अंकीय मोबाइल नंबर या Order ID डालकर खोजें, या नई सेवा बुक करें।
-        </p>
-        <button onclick="closeMyBookingsModal(); handleBookServiceClick('Electrician');" 
-                type="button" 
-                class="mt-4 btn-emerald px-4 py-2 rounded-xl text-xs font-black shadow-sm inline-flex items-center gap-1.5">
-          <i class="fa-solid fa-plus"></i> नई सेवा बुक करें
-        </button>
+        <div>
+          <h4 class="text-base font-black text-slate-900">कोई सक्रिय बुकिंग नहीं मिली</h4>
+          <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto leading-relaxed">
+            अपना 10-अंकीय मोबाइल नंबर या Order ID ऊपर डालकर खोजें, या लाइव ट्रैकर का डेमो तुरंत देखें।
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <button onclick="closeMyBookingsModal(); openLiveTracker();" 
+                  type="button" 
+                  class="btn-emerald px-4 py-2.5 rounded-xl text-xs font-black shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-map-location-dot text-amber-300"></i> <span>👀 लाइव ट्रैकर डेमो देखें</span>
+          </button>
+          <button onclick="closeMyBookingsModal(); handleBookServiceClick('Electrician');" 
+                  type="button" 
+                  class="btn-blue px-4 py-2.5 rounded-xl text-xs font-black shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-bolt"></i> <span>नई सेवा बुक करें</span>
+          </button>
+        </div>
       </div>
     `;
     return;
@@ -3920,10 +3929,11 @@ function openLiveTracker(bookingId) {
     booking = {
       booking_id: "KW-LIVE-01",
       category: "Electrician",
-      assignedWorkerName: "सत्यापित पार्टनर",
+      assignedWorkerName: "राजेश कुमार (सत्यापित प्रो)",
       assignedWorkerPhone: CONFIG.businessPhone || "9899862721",
-      custAddress: window.kwUserLocation?.fullAddress || "Boring Road, Patna",
+      custAddress: window.kwUserLocation?.fullAddress || "गौर सिटी 2, ग्रेटर नोएडा (पते पर प्रस्थान)",
       otp: "5892",
+      priceEstimate: "₹249 - ₹499",
       status: "on_the_way"
     };
   }
@@ -3933,24 +3943,33 @@ function openLiveTracker(bookingId) {
   const orderIdEl = document.getElementById("trackerOrderIdDisplay");
   const serviceTitleEl = document.getElementById("trackerServiceTitle");
   const otpCodeEl = document.getElementById("trackerOtpCode");
-  const otpSmallEl = document.getElementById("trackerOtpCodeSmall");
+  const addressEl = document.getElementById("trackerAddressText");
+  const priceEl = document.getElementById("trackerPriceEstimate");
   const workerNameEl = document.getElementById("trackerWorkerName");
   const workerCatEl = document.getElementById("trackerWorkerCategory");
   const workerCallLink = document.getElementById("trackerWorkerCallLink");
   const workerWaLink = document.getElementById("trackerWorkerWhatsAppLink");
 
   if (orderIdEl) orderIdEl.textContent = booking.booking_id;
-  if (serviceTitleEl) serviceTitleEl.textContent = `${booking.category} Arriving at Doorstep`;
+  if (serviceTitleEl) serviceTitleEl.textContent = `${booking.category || 'Service'} Arriving at Doorstep`;
   const otpVal = booking.otp || "4819";
   if (otpCodeEl) otpCodeEl.textContent = otpVal;
-  if (otpSmallEl) otpSmallEl.textContent = otpVal;
 
-  const workerName = booking.assignedWorkerName || "सत्यापित पार्टनर";
+  if (addressEl) addressEl.textContent = `📍 ${booking.custAddress || 'Home Address'}`;
+  if (priceEl) priceEl.textContent = booking.priceEstimate || "₹249 - ₹499";
+
+  const workerName = booking.assignedWorkerName || "राजेश कुमार (सत्यापित प्रो)";
   const workerPhone = booking.assignedWorkerPhone || CONFIG.businessPhone || "9899862721";
   if (workerNameEl) workerNameEl.textContent = workerName;
   if (workerCatEl) workerCatEl.textContent = booking.category || "Professional Partner";
   if (workerCallLink) workerCallLink.href = `tel:${workerPhone}`;
-  if (workerWaLink) workerWaLink.href = `https://wa.me/91${workerPhone}`;
+  if (workerWaLink) {
+    const waText = encodeURIComponent(`नमस्ते, मुझे KaamWale.com ऑर्डर #${booking.booking_id} के बारे में जानकारी चाहिए।`);
+    workerWaLink.href = `https://wa.me/91${workerPhone.replace(/\D/g, '')}?text=${waText}`;
+  }
+
+  // Update Stepper visually
+  updateTrackerStepper(booking.status || "on_the_way");
 
   modal.classList.remove("hidden");
 
@@ -3958,6 +3977,68 @@ function openLiveTracker(bookingId) {
   setTimeout(() => {
     initLiveTrackingMap(booking);
   }, 250);
+}
+
+function updateTrackerStepper(status) {
+  const line = document.getElementById("trackerProgressLine");
+  const s1 = document.getElementById("trackerStep1Icon");
+  const s2 = document.getElementById("trackerStep2Icon");
+  const s3 = document.getElementById("trackerStep3Icon");
+  const s4 = document.getElementById("trackerStep4Icon");
+
+  if (!line || !s1 || !s2 || !s3 || !s4) return;
+
+  const isPending = status === "pending" || status === "pending_admin" || status === "pending_admin_approval";
+  const isAssigned = status === "assigned" || status === "approved";
+  const isEnRoute = status === "on_the_way";
+  const isArrived = status === "started" || status === "arrived" || status === "completed";
+
+  if (isPending) {
+    line.style.width = "0%";
+    s1.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm ring-4 ring-emerald-200";
+    s2.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-black shadow-sm";
+    s3.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-black shadow-sm";
+    s4.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-black shadow-sm";
+  } else if (isAssigned) {
+    line.style.width = "33%";
+    s1.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm";
+    s2.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm ring-4 ring-emerald-200";
+    s3.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-black shadow-sm";
+    s4.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-black shadow-sm";
+  } else if (isEnRoute) {
+    line.style.width = "66%";
+    s1.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm";
+    s2.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm";
+    s3.className = "w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center text-xs font-black shadow-sm ring-4 ring-amber-200 animate-pulse";
+    s4.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-black shadow-sm";
+  } else {
+    line.style.width = "100%";
+    s1.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm";
+    s2.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm";
+    s3.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm";
+    s4.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-sm ring-4 ring-emerald-200";
+  }
+}
+
+function copyTrackerOtp() {
+  const code = activeTrackingBooking ? activeTrackingBooking.otp || "4819" : "4819";
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(() => {
+      showToast(`📋 डोरस्टेप OTP कॉपी किया गया: ${code}`);
+    }).catch(() => {
+      showToast(`🔑 आपका डोरस्टेप OTP: ${code}`);
+    });
+  } else {
+    showToast(`🔑 आपका डोरस्टेप OTP: ${code}`);
+  }
+}
+
+function triggerTrackerUpiPayment() {
+  if (activeTrackingBooking) {
+    openCustomerUpiPaymentModal(activeTrackingBooking.booking_id);
+  } else {
+    openCustomerUpiPaymentModal('');
+  }
 }
 
 function closeLiveTrackerModal() {
@@ -4119,7 +4200,7 @@ function updateTrackerArrivalStatus() {
   const etaEl = document.getElementById("trackerEtaText");
   const statusEl = document.getElementById("trackerMapStatusBadge");
   if (etaEl) {
-    etaEl.innerHTML = `<span class="text-emerald-900 font-black">🎉 वर्कर आपके दरवाजे पर पहुंच गए हैं!</span>`;
+    etaEl.innerHTML = `<span class="text-emerald-950 font-black">🎉 वर्कर आपके दरवाजे पर पहुंच गए हैं!</span>`;
   }
   if (statusEl) {
     statusEl.innerHTML = `✅ वर्कर दरवाजे पर मौजूद हैं। कृपया काम शुरू करने से पहले OTP साझा करें।`;
@@ -4127,6 +4208,7 @@ function updateTrackerArrivalStatus() {
   if (workerMarkerInstance) {
     workerMarkerInstance.bindPopup(`<b>🎉 वर्कर पहुंच गए हैं!</b><br>कृपया 4-अंकीय OTP साझा करें।`).openPopup();
   }
+  updateTrackerStepper("arrived");
   showToast("🎉 KaamWale पार्टनर आपके दरवाजे पर पहुंच गए हैं! कृपया OTP दें।");
 }
 
@@ -5993,6 +6075,11 @@ function handleMobileAccountClick() {
 window.activateMobileDockTab = activateMobileDockTab;
 window.handleMobileAppSearch = handleMobileAppSearch;
 window.handleMobileAccountClick = handleMobileAccountClick;
+window.copyTrackerOtp = copyTrackerOtp;
+window.triggerTrackerUpiPayment = triggerTrackerUpiPayment;
+window.openLiveTracker = openLiveTracker;
+window.closeLiveTrackerModal = closeLiveTrackerModal;
+
 
 
 
