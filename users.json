@@ -66,26 +66,6 @@
     "phoneVerified": true
   },
   {
-    "id": "kw_cust_9665",
-    "userId": "KW-W624",
-    "password": "1234",
-    "uid": "uid_1792308619665",
-    "name": "7292961601",
-    "email": "lohasingh8023@gmail.com",
-    "phone": "7292961601",
-    "role": "worker",
-    "address": "noida",
-    "category": "Electrician",
-    "skills": "Electrician",
-    "experience": "1",
-    "location": "noida",
-    "status": "active",
-    "updatedAt": "2026-10-26T10:12:00.268Z",
-    "createdAt": "2026-10-18T07:30:19.665Z",
-    "emailVerified": true,
-    "phoneVerified": true
-  },
-  {
     "id": "kw_cust_1532",
     "userId": "lohasingh8023",
     "uid": "uid_1792311251532",

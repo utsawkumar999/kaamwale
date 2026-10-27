@@ -1,11 +1,11 @@
 [
   {
     "booking_id": "KW-DUTY-9066",
-    "status": "assigned",
-    "assignedWorkerId": "kw_cust_9665",
-    "assignedWorkerName": "7292961601",
-    "assignedWorkerPhone": "7292961601",
-    "updatedAt": "2026-10-27T15:33:10.860Z"
+    "status": "pending_admin_approval",
+    "assignedWorkerId": null,
+    "assignedWorkerName": null,
+    "assignedWorkerPhone": null,
+    "updatedAt": "2026-10-27T17:40:00.000Z"
   },
   {
     "booking_id": "KW-410188",

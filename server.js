@@ -902,7 +902,7 @@ const server = http.createServer((req, res) => {
           createdAt: Date.now()
         });
 
-        const purposeHindi = purpose === 'password_reset' ? 'पासवर्ड रीसेट' : (purpose === 'login' ? 'सुरक्षा लॉगिन' : 'खाता रजिस्ट्रेशन');
+        const purposeHindi = purpose === 'password_reset' ? 'पासवर्ड रीसेट' : (purpose === 'admin_2fa' ? 'सुपर एडमिन 2FA लॉगिन' : (purpose === 'login' ? 'सुरक्षा लॉगिन' : 'खाता रजिस्ट्रेशन'));
         const emailSubject = `KaamWale.com - ${purposeHindi} OTP कोड: ${otp}`;
         const emailBody = 
           `Namaste ${userName},\n\n` +
@@ -1413,7 +1413,7 @@ const server = http.createServer((req, res) => {
         res.writeHead(429, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ 
           success: false, 
-          error: `अत्यधिक गलत प्रयासों के कारण एडमिन लॉगिन ${remainingMin} मिनट के लिए लॉक कर दिया गया है।` 
+          error: `अत्यधिक गलत प्रयासों के कारण एडमिन पोर्टल ${remainingMin} मिनट के लिए लॉक है। सुरक्षा कारणों से कृपया प्रतीक्षा करें।` 
         }));
         return;
       }
@@ -1422,32 +1422,53 @@ const server = http.createServer((req, res) => {
         const payload = JSON.parse(body || '{}');
         const identifier = (payload.identifier || '').trim().toLowerCase();
         const password = (payload.password || '').trim();
+        const securityPin = (payload.pin || payload.securityPin || '').trim();
+
+        if (!securityPin) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ 
+            success: false, 
+            error: 'कृपया Founder Security PIN (8190) या Gmail 2FA कोड दर्ज करें।' 
+          }));
+          return;
+        }
 
         const validIdentifiers = ['shivampandat819@gmail.com', '9899862721', 'shivam_admin'];
         const configuredPass = process.env.ADMIN_PASSWORD || 'Shivam@819';
+        const validPins = ['8190', '819819'];
+
+        // Check if there is an active verified 2FA OTP for admin email
+        const adminOtpSession = emailOtpSessions.get('shivampandat819@gmail.com');
+        const isOtpMatch = adminOtpSession && adminOtpSession.otp === securityPin;
 
         const isUserValid = validIdentifiers.includes(identifier);
         const isPassValid = password === configuredPass;
+        const isPinValid = validPins.includes(securityPin) || isOtpMatch;
 
-        if (!isUserValid || !isPassValid) {
+        if (!isUserValid || !isPassValid || !isPinValid) {
           attempt.count = (attempt.count || 0) + 1;
-          if (attempt.count >= 5) {
-            attempt.lockedUntil = Date.now() + 15 * 60 * 1000; // 15 min lockout
+          const maxAllowed = 3;
+          if (attempt.count >= maxAllowed) {
+            attempt.lockedUntil = Date.now() + 30 * 60 * 1000; // 30 min lockout
             attempt.count = 0;
-            console.warn(`🚨 Admin login locked for IP: ${clientIp} after 5 failed attempts`);
+            console.warn(`🚨 Admin login locked for IP: ${clientIp} after ${maxAllowed} failed attempts`);
           }
           adminLoginAttempts.set(clientIp, attempt);
 
+          const attemptsLeft = maxAllowed - (attempt.count || 0);
           res.writeHead(401, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ 
             success: false, 
-            error: '❌ अनधिकृत एक्सेस! केवल संस्थापक शिवम पंडित ही प्रवेश कर सकते हैं।' 
+            error: `❌ अनधिकृत एक्सेस! केवल संस्थापक शिवम पंडित ही प्रवेश कर सकते हैं। (${attemptsLeft > 0 ? attemptsLeft + ' प्रयास शेष' : 'अकाउंट 30 मिनट के लिए लॉक'})` 
           }));
           return;
         }
 
         // Authentication Success: reset attempts
         adminLoginAttempts.delete(clientIp);
+        if (adminOtpSession) {
+          emailOtpSessions.delete('shivampandat819@gmail.com');
+        }
 
         // Issue 64-char crypto session token (valid 4 hours)
         const sessionToken = crypto.randomBytes(32).toString('hex');
@@ -1457,6 +1478,35 @@ const server = http.createServer((req, res) => {
         });
 
         console.log(`👑 Admin successfully authenticated: Shivam Pandat (Session: ${sessionToken.slice(0, 8)}...)`);
+
+        // Send instant security alert email to Founder Shivam Pandat via Brevo
+        try {
+          if (process.env.BREVO_API_KEY) {
+            const loginTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+            const alertHtml = `
+              <div style="font-family:Arial,sans-serif;max-width:540px;margin:auto;padding:24px;border:1px solid #fee2e2;border-radius:16px;background:#ffffff;">
+                <div style="text-align:center;padding-bottom:16px;border-bottom:1px solid #f1f5f9;">
+                  <h2 style="color:#dc2626;margin:0;font-size:22px;">👑 KAAMWALE.COM ADMIN LOGIN ALERT</h2>
+                  <p style="color:#64748b;font-size:12px;margin:4px 0 0;">Platform Founder Security Notification</p>
+                </div>
+                <div style="padding:24px 0;">
+                  <p style="font-size:15px;color:#1e293b;">Namaste <strong>Shivam Pandat</strong> Ji,</p>
+                  <p style="font-size:14px;color:#334155;line-height:1.6;">KaamWale Super Admin Panel par abhi safaltapoorvak login kiya gaya hai:</p>
+                  <div style="background:#fef2f2;border-left:4px solid #dc2626;padding:12px 16px;border-radius:8px;margin:16px 0;">
+                    <p style="margin:4px 0;font-size:13px;color:#991b1b;"><strong>Login Time:</strong> ${loginTime}</p>
+                    <p style="margin:4px 0;font-size:13px;color:#991b1b;"><strong>Admin User:</strong> Shivam Pandat (9899862721)</p>
+                    <p style="margin:4px 0;font-size:13px;color:#991b1b;"><strong>Status:</strong> 2FA Verified & Session Active (4 hrs)</p>
+                  </div>
+                  <p style="font-size:12px;color:#64748b;">Agar ye login aapne nahi kiya hai, to turant apna Master Password aur PIN badlein.</p>
+                </div>
+                <div style="border-top:1px solid #f1f5f9;padding-top:16px;font-size:11px;color:#94a3b8;text-align:center;">
+                  Founder: Shivam Pandat (+91 9899862721) • KaamWale.com Security
+                </div>
+              </div>
+            `;
+            sendBrevoEmailAsync('shivampandat819@gmail.com', 'Shivam Pandat', '👑 KaamWale Admin Panel Login Alert', alertHtml).catch(() => {});
+          }
+        } catch (e) {}
 
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({
@@ -1475,6 +1525,92 @@ const server = http.createServer((req, res) => {
       } catch (err) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: false, error: 'Invalid request payload' }));
+      }
+    });
+    return;
+  }
+
+  // ==========================================
+  // API: DELETE / REMOVE WORKER BY ADMIN (PERMANENT)
+  // ==========================================
+  if (req.method === 'POST' && reqPath === '/api/admin/delete-worker') {
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const workerId = (payload.workerId || payload.id || '').trim();
+        const adminToken = req.headers['x-admin-token'] || req.headers['authorization']?.replace(/^Bearer\s+/i, '') || payload.adminToken;
+
+        if (!isValidAdminToken(adminToken)) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: 'Unauthorized: Founder Admin access required to delete worker' }));
+          return;
+        }
+
+        if (!workerId) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: 'workerId is required' }));
+          return;
+        }
+
+        const users = getStoredUsers();
+        const digits = workerId.replace(/\D/g, '');
+        const cleanPhone = digits.length >= 10 ? digits.slice(-10) : '';
+
+        // Find worker strictly: MUST NOT be admin and MUST match worker ID or exact 10-digit phone
+        const targetIdx = users.findIndex(u => {
+          if (u.role === 'admin' || u.id === 'kw_adm_1' || (u.email && u.email.toLowerCase() === 'shivampandat819@gmail.com') || (u.phone && u.phone.includes('9899862721'))) {
+            return false;
+          }
+          const idMatch = (u.id && u.id === workerId) || (u.userId && u.userId === workerId);
+          const phoneMatch = cleanPhone && u.phone && u.phone.replace(/\D/g, '').endsWith(cleanPhone);
+          return (u.role === 'worker' || !u.role || u.role === 'labour') && (idMatch || phoneMatch);
+        });
+
+        if (targetIdx === -1) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: 'Worker not found in server database' }));
+          return;
+        }
+
+        const deletedWorker = users[targetIdx];
+        users.splice(targetIdx, 1);
+        saveStoredUsers(users);
+
+        // Also unassign this deleted worker from any active orders
+        try {
+          if (fs.existsSync(ORDERS_FILE)) {
+            const orders = JSON.parse(fs.readFileSync(ORDERS_FILE, 'utf8') || '[]');
+            let ordersUpdated = false;
+            orders.forEach(o => {
+              if (o.assignedWorkerId === workerId || o.assignedWorkerId === deletedWorker.id || (deletedWorker.phone && o.assignedWorkerPhone === deletedWorker.phone)) {
+                o.assignedWorkerId = null;
+                o.assignedWorkerName = null;
+                o.assignedWorkerPhone = null;
+                o.status = 'pending_admin_approval';
+                ordersUpdated = true;
+              }
+            });
+            if (ordersUpdated) {
+              fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2), 'utf8');
+              console.log(`📝 Unassigned deleted worker from pending orders in orders.json`);
+            }
+          }
+        } catch (e) {}
+
+        console.log(`🗑️ Worker deleted by Admin: ${deletedWorker.name} (${deletedWorker.userId || deletedWorker.id})`);
+
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({
+          success: true,
+          deletedWorkerId: workerId,
+          deletedWorkerName: deletedWorker.name,
+          message: `Worker ${deletedWorker.name} (${deletedWorker.userId || workerId}) permanently deleted from KaamWale system.`
+        }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: err.message }));
       }
     });
     return;

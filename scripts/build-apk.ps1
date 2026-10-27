@@ -98,6 +98,21 @@ if (!(Test-Path "$ROOT_DIR\public\download")) {
 Copy-Item "$FINAL_APK" "$ROOT_DIR\public\download\KaamWale.apk" -Force
 Copy-Item "$FINAL_APK" "$ROOT_DIR\public\download\kaamwale.apk" -Force
 
+if (!(Test-Path "$ROOT_DIR\download")) {
+    New-Item -ItemType Directory -Path "$ROOT_DIR\download" -Force | Out-Null
+}
+Copy-Item "$FINAL_APK" "$ROOT_DIR\download\KaamWale.apk" -Force
+Copy-Item "$FINAL_APK" "$ROOT_DIR\download\kaamwale.apk" -Force
+
+# Copy to user Windows Downloads folder
+Copy-Item "$FINAL_APK" "C:\Users\utsaw\Downloads\KaamWale.apk" -Force
+
+# Copy to Antigravity brain artifact directory
+$brainDir = "C:\Users\utsaw\.gemini\antigravity\brain\240e38b9-fcd3-4396-9f92-3e1e2df153a0"
+if (Test-Path $brainDir) {
+    Copy-Item "$FINAL_APK" "$brainDir\KaamWale.apk" -Force
+}
+
 $apkSize = (Get-Item $FINAL_APK).Length
 $apkSizeMB = [math]::Round($apkSize / 1MB, 2)
 
