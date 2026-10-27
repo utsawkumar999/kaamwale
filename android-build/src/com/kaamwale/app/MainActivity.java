@@ -48,9 +48,9 @@ public class MainActivity extends Activity {
         settings.setAllowContentAccess(true);
         settings.setLoadsImagesAutomatically(true);
 
-        // Mobile Viewport: Force mobile device width (DO NOT use desktop wide viewport)
-        settings.setUseWideViewPort(false);
-        settings.setLoadWithOverviewMode(false);
+        // Mobile Viewport: Honor viewport meta tag for mobile device width
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
 

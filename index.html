@@ -190,45 +190,45 @@
   <!-- ==============================================
        2. STARTUP HEADER NAVBAR
   ============================================== -->
-  <header class="sticky top-0 z-40 startup-nav transition-all duration-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
+  <header class="sticky top-0 z-40 startup-nav transition-all duration-200 bg-white/95 backdrop-blur-md border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14 sm:h-20 gap-1 sm:gap-3">
         
         <!-- Brand Logo with Blue, Red, Green Identity -->
-        <a href="#home" class="flex items-center gap-3.5 group">
-          <div class="w-12 h-12 bg-gradient-to-tr from-blue-700 via-blue-900 to-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl shadow-md border-2 border-emerald-500 group-hover:scale-105 transition-transform duration-200">
-            <i class="fa-solid fa-screwdriver-wrench text-amber-400"></i>
+        <a href="#home" class="flex items-center gap-1.5 sm:gap-3 group shrink-0">
+          <div class="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-tr from-blue-700 via-blue-900 to-slate-900 rounded-xl sm:rounded-2xl flex items-center justify-center text-white text-base sm:text-2xl shadow-md border-2 border-emerald-500 group-hover:scale-105 transition-transform duration-200 shrink-0">
+            <i class="fa-solid fa-screwdriver-wrench text-amber-400 text-xs sm:text-lg"></i>
           </div>
           <div>
-            <div class="flex items-center tracking-tight font-black text-2xl leading-none">
-              <span class="text-blue-700">KAAM</span><span class="text-emerald-600">WALE</span><span class="text-red-500 text-xl font-black">.COM</span>
+            <div class="flex items-center tracking-tight font-black text-base sm:text-2xl leading-none">
+              <span class="text-blue-700">KAAM</span><span class="text-emerald-600">WALE</span><span class="text-red-500 text-xs sm:text-xl font-black">.COM</span>
             </div>
-            <p class="text-[10px] font-extrabold text-slate-500 tracking-wider mt-1 uppercase flex items-center gap-1.5">
-              <span class="online-indicator"></span> YOUR HOME SERVICE PARTNER <span class="bg-red-50 text-red-600 border border-red-200 px-1 py-0.2 rounded text-[9px] font-bold">24x7</span>
+            <p class="hidden sm:flex text-[9px] sm:text-[10px] font-extrabold text-slate-500 tracking-wider mt-0.5 uppercase items-center gap-1">
+              <span class="online-indicator"></span> YOUR HOME SERVICE PARTNER <span class="bg-red-50 text-red-600 border border-red-200 px-1 py-0.2 rounded text-[8px] sm:text-[9px] font-bold">24x7</span>
             </p>
           </div>
         </a>
 
         <!-- Blinkit & Rapido Style Live Delivery Location Pill -->
-        <div id="headerGpsBar" class="flex items-center ml-1 sm:ml-3">
+        <div id="headerGpsBar" class="flex items-center shrink-0">
           <button type="button" onclick="openLocationSelectorModal()" 
-                  class="flex items-center gap-2 sm:gap-2.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-300/80 text-left transition shadow-sm group">
-            <div class="relative w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform">
-              <i class="fa-solid fa-location-crosshairs text-red-600 text-xs sm:text-sm"></i>
+                  class="flex items-center gap-1 sm:gap-2 px-1.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-300/80 text-left transition shadow-2xs group">
+            <div class="relative w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-location-crosshairs text-red-600 text-[10px] sm:text-sm"></i>
               <span class="absolute -top-1 -right-1 flex h-2 w-2">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
               </span>
             </div>
-            <div class="leading-tight max-w-[100px] xs:max-w-[130px] sm:max-w-[160px] md:max-w-[190px]">
+            <div class="leading-tight max-w-[70px] xs:max-w-[95px] sm:max-w-[160px] md:max-w-[190px]">
               <div class="flex items-center gap-1">
-                <span class="text-[9px] sm:text-[10px] font-black uppercase tracking-tight text-slate-900 flex items-center gap-1">
-                  <span class="text-emerald-700 font-black">⚡ 15-30 Mins</span>
+                <span class="text-[7.5px] sm:text-[10px] font-black uppercase tracking-tight text-slate-900 flex items-center gap-1">
+                  <span class="text-emerald-700 font-black">⚡ 15-30M</span>
                 </span>
-                <i class="fa-solid fa-chevron-down text-[8px] sm:text-[9px] text-slate-500 group-hover:text-slate-900 transition"></i>
+                <i class="fa-solid fa-chevron-down text-[7px] sm:text-[9px] text-slate-500 group-hover:text-slate-900 transition"></i>
               </div>
-              <div id="headerLocationText" class="text-[11px] sm:text-xs font-black text-slate-900 truncate" title="Click to change location">
-                📍 GPS खोज रहे हैं...
+              <div id="headerLocationText" class="text-[9.5px] sm:text-xs font-black text-slate-900 truncate" title="Click to change location">
+                📍 GPS...
               </div>
             </div>
           </button>
@@ -252,10 +252,10 @@
         </nav>
 
         <!-- Right Side: Auth / Profile Button + Track Order -->
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           <!-- Download Mobile App Button -->
           <button id="navDownloadAppBtn" onclick="openAppDownloadModal()" type="button" 
-                  class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs shadow-sm hover:shadow transition group shrink-0" title="Download Mobile App for Android (.apk) & iOS">
+                  class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs shadow-sm hover:shadow transition group shrink-0" title="Download Mobile App for Android (.apk) & iOS">
             <div class="flex items-center gap-1">
               <i class="fa-brands fa-android text-xs sm:text-sm text-green-300"></i>
               <i class="fa-brands fa-apple text-xs sm:text-sm text-white"></i>
@@ -264,9 +264,9 @@
             <span class="text-[9px] bg-white/20 px-1.5 py-0.5 rounded-full font-bold uppercase hidden md:inline">APK</span>
           </button>
 
-          <!-- Professional Blinkit/Rapido Style Track Order Button -->
+          <!-- Professional Blinkit/Rapido Style Track Order Button (Hidden on small mobile, accessible via bottom dock Orders tab) -->
           <button id="navTrackOrderBtn" onclick="openMyBookingsModal()" type="button" 
-                  class="relative inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-blue-50 via-sky-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 font-black text-xs border border-blue-300 shadow-sm hover:shadow transition group">
+                  class="hidden md:inline-flex relative items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-blue-50 via-sky-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 font-black text-xs border border-blue-300 shadow-sm hover:shadow transition group shrink-0">
             <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs shadow-inner group-hover:scale-105 transition-transform shrink-0">
               <i class="fa-solid fa-truck-fast text-[11px] sm:text-xs"></i>
             </div>
@@ -280,13 +280,13 @@
             </span>
           </button>
 
-          <div id="authContainer">
+          <div id="authContainer" class="shrink-0">
             <!-- Populated dynamically: Google Sign-in or User pill -->
           </div>
 
           <!-- Mobile Hamburger Button -->
-          <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:text-blue-600 hover:bg-slate-200 transition focus:outline-none" aria-label="Toggle menu">
-            <i class="fa-solid fa-bars text-xl"></i>
+          <button onclick="toggleMobileMenu()" class="lg:hidden p-2 sm:p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:text-blue-600 hover:bg-slate-200 transition focus:outline-none shrink-0" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars text-lg sm:text-xl"></i>
           </button>
         </div>
 
@@ -359,7 +359,7 @@
   <!-- ==============================================
        3. HERO SECTION (BLUE-RED-GREEN HARMONY)
   ============================================== -->
-  <section id="home" class="hero-tricolor text-white py-16 md:py-24 px-4 relative overflow-hidden">
+  <section id="home" class="hero-tricolor text-white py-6 md:py-24 px-3 sm:px-4 relative overflow-hidden">
     <!-- Ambient Glows -->
     <div class="absolute top-10 left-10 w-96 h-96 bg-red-500/15 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute bottom-10 right-10 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -666,7 +666,7 @@
           <!-- Card 1 -->
           <div onclick="handleBookServiceClick('Electrician')" class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between cursor-pointer active:scale-95 transition">
             <div>
-              <span class="text-[9px] font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">★ 4.9 (1.2k)</span>
+              <span class="text-[9px] font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">★ 5.0 · Top Rated</span>
               <h4 class="text-xs font-black text-slate-900 mt-1.5">Fan & Switch Repair</h4>
               <p class="text-[10px] text-slate-500 leading-tight">Short wire & board fix</p>
             </div>
@@ -679,7 +679,7 @@
           <!-- Card 2 -->
           <div onclick="handleBookServiceClick('Plumber')" class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between cursor-pointer active:scale-95 transition">
             <div>
-              <span class="text-[9px] font-black text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded">★ 4.8 (940)</span>
+              <span class="text-[9px] font-black text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded">★ 4.9 · Verified Pro</span>
               <h4 class="text-xs font-black text-slate-900 mt-1.5">Tap & Leakage Fix</h4>
               <p class="text-[10px] text-slate-500 leading-tight">Tank & pipe fitting</p>
             </div>
@@ -1676,6 +1676,18 @@
           <div class="text-center pt-3 border-t border-slate-100 text-xs text-slate-600">
             Don't have an account? 
             <button type="button" onclick="switchCustomerTab('register')" class="text-blue-600 font-black hover:underline ml-1">Sign up</button>
+          </div>
+
+          <!-- Quick Portal Switcher for Worker and Admin -->
+          <div class="flex items-center justify-center gap-2 pt-2 text-[11px] font-bold text-slate-500">
+            <span>अलग पोर्टल:</span>
+            <button type="button" onclick="closeCustomerAuthModal(); openWorkerLoginModal();" class="text-blue-700 hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-briefcase text-[10px]"></i> Worker Login
+            </button>
+            <span>•</span>
+            <button type="button" onclick="closeCustomerAuthModal(); openAdminLoginModal();" class="text-red-600 hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-crown text-amber-500 text-[10px]"></i> Admin
+            </button>
           </div>
         </div>
 
@@ -3782,7 +3794,7 @@
       </div>
       <span>Orders</span>
     </button>
-    <button type="button" onclick="openCustomerAuthModal('login')" class="mobile-dock-btn">
+    <button type="button" onclick="handleMobileAccountClick()" class="mobile-dock-btn">
       <i class="fa-solid fa-user"></i>
       <span id="mobileDockProfileLabel">Account</span>
     </button>

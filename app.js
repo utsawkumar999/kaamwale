@@ -445,16 +445,17 @@ function renderAuthUI() {
     container.innerHTML = workerHtml;
     if (mobileContainer) mobileContainer.innerHTML = workerHtml;
   } else {
-    // 3 SEPARATE LOGIN BUTTONS: Customer Login / Register, Worker Login, Admin Login
+    // DESKTOP: 3 SEPARATE LOGIN BUTTONS: Customer Login / Register, Worker Login, Admin Login
+    // MOBILE / APK: SLEEK COMPACT PROFILE BUTTON (Zero horizontal overflow)
     const loginHtml = `
-      <div class="flex items-center gap-1.5 sm:gap-2">
+      <div class="hidden md:flex items-center gap-1.5 sm:gap-2">
         <button onclick="openCustomerAuthModal('login')" 
                 class="inline-flex items-center gap-1 bg-white hover:bg-slate-50 text-slate-800 font-bold px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs border border-slate-300 hover:border-emerald-500 shadow-sm transition" title="ग्राहक लॉगिन (पासवर्ड सहित)">
           <i class="fa-solid fa-user text-emerald-600"></i>
           <span>Customer</span>
         </button>
         <button onclick="openCustomerAuthModal('register')" 
-                class="hidden md:inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs shadow-sm transition" title="नया ग्राहक रजिस्ट्रेशन">
+                class="hidden lg:inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs shadow-sm transition" title="नया ग्राहक रजिस्ट्रेशन">
           <i class="fa-solid fa-user-plus text-[10px]"></i>
           <span>Register</span>
         </button>
@@ -467,6 +468,12 @@ function renderAuthUI() {
                 class="inline-flex items-center gap-1 bg-red-50 hover:bg-red-100 text-red-900 font-black px-2 py-1.5 sm:px-2.5 sm:py-2 rounded-xl text-xs border border-red-200 hover:border-red-400 shadow-sm transition" title="सुपर एडमिन (फाउंडर शिवम पंडित)">
           <i class="fa-solid fa-crown text-amber-500"></i>
           <span class="hidden sm:inline">Admin</span>
+        </button>
+      </div>
+      <div class="flex md:hidden items-center">
+        <button onclick="openCustomerAuthModal('login')" 
+                class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold border border-slate-200 shadow-2xs transition" title="खाता / लॉगिन">
+          <i class="fa-solid fa-user text-xs text-emerald-600"></i>
         </button>
       </div>
     `;
@@ -5969,7 +5976,23 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+function handleMobileAccountClick() {
+  if (currentUser) {
+    if (currentUser.role === 'admin') {
+      openAdminPanelModal();
+    } else {
+      openMyBookingsModal();
+    }
+  } else if (currentWorkerUser) {
+    openWorkerDashboardModal();
+  } else {
+    openCustomerAuthModal('login');
+  }
+}
+
 window.activateMobileDockTab = activateMobileDockTab;
 window.handleMobileAppSearch = handleMobileAppSearch;
+window.handleMobileAccountClick = handleMobileAccountClick;
+
 
 
