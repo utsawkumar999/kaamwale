@@ -385,12 +385,25 @@ function renderAuthUI() {
 
   if (currentUser) {
     const isAdmin = currentUser.role === "admin";
-    const userHtml = `
-      <div class="flex items-center gap-2 sm:gap-3 bg-blue-50/90 border border-blue-200 pl-2 pr-3 py-1.5 rounded-full shadow-sm">
+    
+    // 1. MOBILE COMPACT BUTTON (< sm): Single sleek button (Zero overflow!)
+    const mobileBtn = isAdmin 
+      ? `<button type="button" onclick="openAdminPanelModal()" class="flex sm:hidden items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs shadow-sm transition active:scale-95 shrink-0" title="एडमिन पैनल खोलें">
+           <i class="fa-solid fa-crown text-amber-300 text-xs"></i>
+           <span class="text-[10px] font-black uppercase">Admin</span>
+           <span class="navAdminBadge bg-amber-300 text-slate-950 text-[9px] font-black px-1.5 py-0.2 rounded-full">0</span>
+         </button>`
+      : `<button type="button" onclick="openMyBookingsModal()" class="flex sm:hidden items-center justify-center w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs shadow-sm active:scale-95 shrink-0" title="मेरी बुकिंग्स">
+           ${(currentUser.name || 'CU').slice(0, 2).toUpperCase()}
+         </button>`;
+
+    // 2. DESKTOP FULL PILL (>= sm): Full details + logout
+    const desktopHtml = `
+      <div class="hidden sm:flex items-center gap-2 sm:gap-3 bg-blue-50/90 border border-blue-200 pl-2 pr-3 py-1.5 rounded-full shadow-sm">
         <div class="w-8 h-8 rounded-full ${isAdmin ? 'bg-red-600 text-amber-300' : 'bg-blue-600 text-white'} font-black flex items-center justify-center text-xs shadow-sm">
-          ${isAdmin ? '<i class="fa-solid fa-crown text-xs"></i>' : currentUser.name.slice(0, 2).toUpperCase()}
+          ${isAdmin ? '<i class="fa-solid fa-crown text-xs"></i>' : (currentUser.name || 'CU').slice(0, 2).toUpperCase()}
         </div>
-        <div class="text-left hidden sm:block">
+        <div class="text-left">
           <p class="text-xs font-bold text-slate-800 leading-tight flex items-center gap-1">
             ${currentUser.name}
             ${isAdmin ? '<span class="bg-red-100 text-red-700 text-[9px] px-1.5 py-0.2 rounded font-black">Admin</span>' : '<i class="fa-solid fa-circle-check text-emerald-500 text-[11px]" title="Verified"></i>'}
@@ -399,11 +412,11 @@ function renderAuthUI() {
         </div>
         ${isAdmin 
           ? `<button onclick="openAdminPanelModal()" class="text-xs bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1 rounded-full transition flex items-center gap-1.5 shadow-sm" title="एडमिन पैनल">
-               <i class="fa-solid fa-sliders"></i> <span class="hidden md:inline">Admin Panel</span>
-               <span id="navAdminPendingBadge" class="bg-amber-300 text-slate-900 text-[10px] font-black px-1.5 py-0.2 rounded-full">0</span>
+               <i class="fa-solid fa-sliders"></i> <span>Admin Panel</span>
+               <span class="navAdminBadge bg-amber-300 text-slate-900 text-[10px] font-black px-1.5 py-0.2 rounded-full">0</span>
              </button>`
           : `<button onclick="openMyBookingsModal()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded-full transition flex items-center gap-1" title="मेरी बुकिंग्स">
-               <i class="fa-solid fa-list-check"></i> <span class="hidden md:inline">Bookings</span>
+               <i class="fa-solid fa-list-check"></i> <span>Bookings</span>
              </button>`
         }
         <button onclick="handleLogout()" class="text-slate-400 hover:text-red-600 transition text-sm p-1 ml-1" title="लॉगआउट (Sign Out)">
@@ -411,23 +424,46 @@ function renderAuthUI() {
         </button>
       </div>
     `;
-    container.innerHTML = userHtml;
-    if (mobileContainer) mobileContainer.innerHTML = userHtml;
+
+    // 3. DROPDOWN MENU CARD: Rich card with logout in hamburger menu
+    const menuCardHtml = `
+      <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl ${isAdmin ? 'bg-red-600 text-amber-300' : 'bg-blue-600 text-white'} flex items-center justify-center font-black text-xs shadow-sm">
+            ${isAdmin ? '<i class="fa-solid fa-crown text-sm"></i>' : (currentUser.name || 'CU').slice(0, 2).toUpperCase()}
+          </div>
+          <div>
+            <p class="text-xs font-black text-slate-900 leading-tight">${currentUser.name} ${isAdmin ? '<span class="text-red-600 font-bold">(Admin)</span>' : ''}</p>
+            <p class="text-[10px] text-slate-500">${currentUser.phone || currentUser.email}</p>
+          </div>
+        </div>
+        <button onclick="handleLogout()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    `;
+
+    container.innerHTML = mobileBtn + desktopHtml;
+    if (mobileContainer) mobileContainer.innerHTML = menuCardHtml;
 
     if (isAdmin) {
       const pendingCount = getStoredBookings().filter(b => b.status === "pending_admin_approval" || b.status === "pending_admin" || b.status === "pending").length;
-      const badge1 = container.querySelector("#navAdminPendingBadge");
-      const badge2 = mobileContainer ? mobileContainer.querySelector("#navAdminPendingBadge") : null;
-      if (badge1) badge1.textContent = pendingCount;
-      if (badge2) badge2.textContent = pendingCount;
+      document.querySelectorAll(".navAdminBadge").forEach(el => el.textContent = pendingCount);
     }
   } else if (currentWorkerUser) {
-    const workerHtml = `
-      <div class="flex items-center gap-2 sm:gap-3 bg-blue-50/90 border border-blue-200 pl-2 pr-3 py-1.5 rounded-full shadow-sm">
+    const mobileBtn = `
+      <button type="button" onclick="openWorkerDashboardModal()" class="flex sm:hidden items-center gap-1 px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-sm transition active:scale-95 shrink-0" title="कामगार डैशबोर्ड">
+        <i class="fa-solid fa-briefcase text-xs"></i>
+        <span class="text-[10px] font-black uppercase">Worker</span>
+      </button>
+    `;
+
+    const desktopHtml = `
+      <div class="hidden sm:flex items-center gap-2 sm:gap-3 bg-blue-50/90 border border-blue-200 pl-2 pr-3 py-1.5 rounded-full shadow-sm">
         <div class="w-8 h-8 rounded-full bg-blue-700 text-white font-black flex items-center justify-center text-xs shadow-sm">
           <i class="fa-solid fa-screwdriver-wrench"></i>
         </div>
-        <div class="text-left hidden sm:block">
+        <div class="text-left">
           <p class="text-xs font-bold text-slate-800 leading-tight flex items-center gap-1">
             ${currentWorkerUser.name}
             <span class="bg-emerald-100 text-emerald-700 text-[9px] px-1.5 py-0.2 rounded font-black">On Duty</span>
@@ -435,18 +471,34 @@ function renderAuthUI() {
           <p class="text-[10px] text-slate-500 leading-none">${currentWorkerUser.userId || 'Worker'}</p>
         </div>
         <button onclick="openWorkerDashboardModal()" class="text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1 rounded-full transition flex items-center gap-1">
-          <i class="fa-solid fa-briefcase"></i> <span class="hidden md:inline">Dashboard</span>
+          <i class="fa-solid fa-briefcase"></i> <span>Dashboard</span>
         </button>
         <button onclick="handleWorkerLogout()" class="text-slate-400 hover:text-red-600 transition text-sm p-1 ml-1" title="ऑफ-ड्यूटी / लॉगआउट">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
         </button>
       </div>
     `;
-    container.innerHTML = workerHtml;
-    if (mobileContainer) mobileContainer.innerHTML = workerHtml;
+
+    const menuCardHtml = `
+      <div class="p-3 bg-blue-50 rounded-2xl border border-blue-200 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-blue-700 text-white flex items-center justify-center text-sm shadow-sm">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+          </div>
+          <div>
+            <p class="text-xs font-black text-slate-900 leading-tight">${currentWorkerUser.name} <span class="text-emerald-700 font-bold">(On Duty)</span></p>
+            <p class="text-[10px] text-slate-500">${currentWorkerUser.userId || 'Worker'}</p>
+          </div>
+        </div>
+        <button onclick="handleWorkerLogout()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    `;
+
+    container.innerHTML = mobileBtn + desktopHtml;
+    if (mobileContainer) mobileContainer.innerHTML = menuCardHtml;
   } else {
-    // DESKTOP: 3 SEPARATE LOGIN BUTTONS: Customer Login / Register, Worker Login, Admin Login
-    // MOBILE / APK: SLEEK COMPACT PROFILE BUTTON (Zero horizontal overflow)
     const loginHtml = `
       <div class="hidden md:flex items-center gap-1.5 sm:gap-2">
         <button onclick="openCustomerAuthModal('login')" 
